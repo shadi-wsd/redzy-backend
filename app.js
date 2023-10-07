@@ -44,7 +44,7 @@ app.use("/api", router);
 // routes::end
 
 app.get("/api", (req, res) => {
-    return res.send("<h1>Hi Thumbtack is working Happy Hack</h1>")
+    return res.send("<h1>Hi Redzy is working Happy Hack</h1>")
 })
 
 // config
