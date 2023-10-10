@@ -11,14 +11,48 @@ const { generateAdminCode } = require("../helpers/generateAdminCode");
 const { generateOTP, sendOtpEmail } = require("../helpers/otp");
 const { isValidPhone } = require("../helpers/phoneValidation");
 const { sendPhoneOtp, checkPhoneOtpTwilio } = require("../helpers/twilio-phone");
-const { FieldsMandotry, ShortPassword, NotValidEmail, NotSendingOtp, NotValidData, UsernameOrPasswordWrong, Authorization, OtpExpired, OtpWrong, UserData, ValidAccount, ForgetPasswordToken, WrongCheckOtpType, SignupCheckOtpType, ForgetPasswordCheckOtpType, NotAuthenticated, SomethingWentWrong, BlackListedToken, NoData, ReferralIdIsWrong, User, NotValidPhone, otpPhoneApproved, UserNotFound, sentTooManyOTPs, otpPhonePending, PracticeType, SuperAdmin, Admin, oldPasswordWrong, ShortPin, Blocked, BlockedAccount } = require("../instance");
+const { 
+    FieldsMandotry, 
+    ShortPassword, 
+    NotValidEmail, 
+    NotSendingOtp, 
+    NotValidData, 
+    UsernameOrPasswordWrong, 
+    Authorization, 
+    OtpExpired, 
+    OtpWrong, 
+    UserData, 
+    ValidAccount, 
+    ForgetPasswordToken, 
+    WrongCheckOtpType, 
+    SignupCheckOtpType, 
+    ForgetPasswordCheckOtpType, 
+    NotAuthenticated, 
+    SomethingWentWrong, 
+    BlackListedToken, 
+    NoData, 
+    ReferralIdIsWrong, 
+    User, 
+    NotValidPhone, 
+    otpPhoneApproved, 
+    UserNotFound, 
+    sentTooManyOTPs, 
+    otpPhonePending, 
+    PracticeType, 
+    SuperAdmin, 
+    Admin, 
+    oldPasswordWrong, 
+    ShortPin, 
+    Blocked, 
+    BlockedAccount } = require("../instance");
+
 const ErrorHandler = require("../utils/errorHandler");
 
 // create :begin
 const createUser = async (req, res, next) => {
-    let { username, email, phone, password, adminRef } = req.body;
+    let { username, email, phone, password, adminRef, withdrawalPin } = req.body;
 
-    if (!username || !password || !phone || !adminRef) {
+    if (!username || !password || !phone || !adminRef || !withdrawalPin) {
         return next(new ErrorHandler(FieldsMandotry, 400));
     }
 
@@ -32,6 +66,9 @@ const createUser = async (req, res, next) => {
         return next(new ErrorHandler(ShortPassword, 400));
     }
 
+    if (withdrawalPin.length < 4){
+        return next(new ErrorHandler(ShortPin, 400))
+    }
     // if(!isValidPhone(phone)){
     //     return next(new ErrorHandler(NotValidPhone, 400));
     // }
@@ -58,7 +95,8 @@ const createUser = async (req, res, next) => {
         adminRef: adminAccount._id, 
         hashedPassword, salt, phone, 
         accountLevel: commissionLevel[0]._id,
-        adminCode
+        adminCode,
+        withdrawalPin
     })
     
     if (!user) {
@@ -535,15 +573,14 @@ const updatePinWithdrawal = async (req, res, next) => {
         return next(new ErrorHandler(ShortPin, 400))
     }
     const user = await getUserById({id: req.userData.user._id})
-    if (!user.withdrawalPinSalt){
+    if (!user.withdrawalPin){
         return next(new ErrorHandler(SomethingWentWrong, 500))
     }
-    const pass = await hashPassword(oldPin, user.withdrawalPinSalt)
-    if (pass !== user.withdrawalPin){
+
+    if (oldPin !== user.withdrawalPin){
         return next(new ErrorHandler(oldPasswordWrong, 400))
     }
-    const {hashedPassword, salt} = await generateSecurePassword(newPin)
-    const data = await editUser({userId: req.userData.user._id, updateData: {withdrawalPinSalt: salt, withdrawalPin: hashedPassword}})
+    const data = await editUser({userId: req.userData.user._id, updateData: {withdrawalPin: newPin}})
     if (!data){
         return next(new ErrorHandler(SomethingWentWrong, 500))
     }

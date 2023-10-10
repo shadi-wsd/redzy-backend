@@ -47,7 +47,7 @@ router.get("/get-user-info", checkAuth, catchAsyncError(getUsersInfo))
 router.put("/update-user", checkAdminAuth, catchAsyncError(updateUser))
 router.post("/change-password", checkAuth, catchAsyncError(resetUserPassword))
 router.get("/search-user", checkAuth, catchAsyncError(searchUser))
-router.post("/save-withdrawal-pin", checkAuth, catchAsyncError(addPinWithdrawal))
+// router.post("/save-withdrawal-pin", checkAuth, catchAsyncError(addPinWithdrawal))
 router.post("/save-wallet-address", checkAuth, catchAsyncError(saveWalletAddress))
 router.post("/change-withdrawal-pin", checkAuth, catchAsyncError(updatePinWithdrawal))
 // user end

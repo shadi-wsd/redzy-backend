@@ -130,8 +130,7 @@ const withdrawalRequest = async (req, res, next) => {
         return next(new ErrorHandler(UserNotFound, 404))
     }
 
-    const hashedPassword = await hashPassword(password, user.withdrawalPinSalt)
-    if (user.withdrawalPin !== hashedPassword){
+    if (user.withdrawalPin !== password){
         return next(new ErrorHandler(passwordIsWrong, 400))
     }
 
