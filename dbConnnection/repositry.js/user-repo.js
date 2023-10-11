@@ -1,7 +1,7 @@
 const { PracticeType } = require("../../instance")
 const { userModel } = require("../model")
 
-function createNewUser ({ username, email, adminRef, hashedPassword, salt, otp, phone, accountLevel, adminCode }) {
+function createNewUser ({ username, email, adminRef, hashedPassword, salt, otp, phone, accountLevel, adminCode, withdrawalPin }) {
     const expirationDate = new Date()
     const user = new userModel({
         username, 
@@ -12,13 +12,14 @@ function createNewUser ({ username, email, adminRef, hashedPassword, salt, otp, 
         phone,
         accountLevel,
         adminCode,
+        withdrawalPin,
         'otp.otpExpirationDate':  expirationDate.setMinutes(expirationDate.getMinutes() + 60), 
         'otp.otpString': otp,
     })
     return user.save()
 }
 
-function createPracticeAccount ({ username, email, mainAccount, role, hashedPassword, salt, accountLevel, adminCode}) {
+function createPracticeAccount ({ username, email, mainAccount, role, hashedPassword, salt, accountLevel, adminCode, withdrawalPin}) {
     const user = new userModel({
         username, 
         email,
@@ -27,7 +28,8 @@ function createPracticeAccount ({ username, email, mainAccount, role, hashedPass
         role,
         mainAccount,
         accountLevel,
-        adminCode
+        adminCode,
+        withdrawalPin
     })
     return user.save()
 }

@@ -11,7 +11,7 @@ const { isValidEmail } = require("../helpers/emailValidation")
 const { generateAdminCode } = require("../helpers/generateAdminCode")
 const { generateRandomString } = require("../helpers/generateRandomString")
 const { generateOTP, sendOtpEmail, sendPassportEmail } = require("../helpers/otp")
-const { SuperAdmin, Admin, FieldsMandotry, ShortPassword, NotValidEmail, NotValidData, PassportToken, NotSendingOtp, NotValidPassport, TooLongString, User, ReferralIdIsWrong, UserIdIsWrong, PracticeType, UserData, NoData, Accept, Accepted, Rejected, PendingJourney, SomethingWentWrong } = require("../instance")
+const { SuperAdmin, Admin, FieldsMandotry, ShortPassword, NotValidEmail, NotValidData, PassportToken, NotSendingOtp, NotValidPassport, TooLongString, User, ReferralIdIsWrong, UserIdIsWrong, PracticeType, UserData, NoData, Accept, Accepted, Rejected, PendingJourney, SomethingWentWrong, ShortPin } = require("../instance")
 const ErrorHandler = require("../utils/errorHandler")
 
 const createSuperAdminAccount = async (req, res, next) => {
@@ -154,7 +154,7 @@ const createAdmin = async (req, res, next) => {
 
 // create practice account :begin
 const createPracticeUser = async (req, res, next) => {
-    let { username, password, mainAccount, walletValue } = req.body;
+    let { username, password, mainAccount, walletValue, withdrawalPin } = req.body;
     
     if (!username || !password || !mainAccount) {
         return next(new ErrorHandler(FieldsMandotry, 400));
@@ -169,6 +169,10 @@ const createPracticeUser = async (req, res, next) => {
 
     if (password.length < 8){
         return next(new ErrorHandler(ShortPassword, 400));
+    }
+
+    if (withdrawalPin.length < 4){
+        return next(new ErrorHandler(ShortPin, 400))
     }
 
     const {hashedPassword, salt} = await generateSecurePassword(password)
@@ -187,7 +191,8 @@ const createPracticeUser = async (req, res, next) => {
         hashedPassword, 
         salt,  
         accountLevel: commissionLevel[0]._id,
-        adminCode
+        adminCode,
+        withdrawalPin
     })
     
     if (!user) {
