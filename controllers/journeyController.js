@@ -1,6 +1,6 @@
 const { addToHistory, getLastProduct, editHistory, getTodayRewards, getJourneysHistoryByUser } = require("../dbConnnection/repositry.js/JourneyHistory-repo")
 const { getCommissionLevelById } = require("../dbConnnection/repositry.js/commission-repo")
-const { createJourney, editJourney, getJourneyByAdmin, getJourneyByIdAndUserId, getLastJourneyByUserId, getLastJourneyByUserIdForUser, getJourneysByUserIdForUser, getJourneysByUserIdForAdmin } = require("../dbConnnection/repositry.js/journey-repo")
+const { createJourney, editJourney, getJourneyByAdmin, getJourneyByIdAndUserId, getLastJourneyByUserId, getLastJourneyByUserIdForUser, getJourneysByUserIdForUser, getJourneysByUserIdForAdmin, getJourneyById } = require("../dbConnnection/repositry.js/journey-repo")
 const { getProductsById, getRandomProductWithMaxPrice } = require("../dbConnnection/repositry.js/product-repo")
 const { getUserById, editUser } = require("../dbConnnection/repositry.js/user-repo")
 const { getWalletByUserId, editWallet } = require("../dbConnnection/repositry.js/wallet-repos")
@@ -258,6 +258,25 @@ const cancelJourney = async (req, res, next) => {
     })
 }
 
+const resetJourney = async (req, res, next) => {
+    const { journeyId } = req.body
+    
+    if (!journeyId){
+        return next(new ErrorHandler(FieldsMandotry, 400))
+    }
+    const canceledJourney = await editJourney({journeyId, updateData: {status: CanceledJourney}})
+    if(!canceledJourney){
+        return next(new ErrorHandler(SomethingWentWrong, 400))
+    }
+    const journey = await createJourney({userId: canceledJourney.userId, adminId: req.userData.user._id, breakPoints: canceledJourney.breakPoints, maxStagesNumber: canceledJourney.maxStagesNumber, productValue: canceledJourney.productValue, pointsCommission: canceledJourney.pointsCommission})
+
+    return res.json({
+        success: true,
+        message: "Journey reseted successfully",
+        journey
+    })
+}
+
 const userJourneys = async (req, res, next) => {
     const userId = req.userData.user._id
     if (!userId){
@@ -340,5 +359,6 @@ module.exports = {
     userJourneys,
     getJourneyHistory,
     userJourneysByAdmin,
-    getJourneyByIdForAdmin
+    getJourneyByIdForAdmin,
+    resetJourney
 }

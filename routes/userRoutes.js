@@ -11,7 +11,7 @@ const { chargeWallet, getWalletsById, getWalletsByUserId, editWalletValue, withd
 // const { getConversations, getAdminConversations, getUserConversations, getClientChat } = require("../controllers/chatController");
 const { upload } = require("../helpers/multer");
 const Journey = require("../dbConnnection/model/Journey");
-const { placeJourney, editJourneys, placeOrder, submitOrder, getLastJourneyInof, cancelJourney, userJourneys, getJourneyHistory, userJourneysByAdmin, getJourneyByIdForAdmin } = require("../controllers/journeyController");
+const { placeJourney, editJourneys, placeOrder, submitOrder, getLastJourneyInof, cancelJourney, userJourneys, getJourneyHistory, userJourneysByAdmin, getJourneyByIdForAdmin, resetJourney } = require("../controllers/journeyController");
 const { getMyTransactions } = require("../controllers/transactionsController");
 const { createCustomJourneys, editCustomJourneys, getCustomJourney, getCustomJourneys } = require("../controllers/customJourneyController");
 const { addParameter, updateParameter, getParametersById, getParameters, getParametersByName } = require("../controllers/parametersController");
@@ -96,11 +96,11 @@ router.get("/get-journey", checkAuth, catchAsyncError(getLastJourneyInof))
 router.post("/place-order", checkAuth, catchAsyncError(placeOrder))
 router.post("/submit-order", checkAuth, catchAsyncError(submitOrder))
 router.put("/cancel-journey", checkAdminAuth, catchAsyncError(cancelJourney))
+router.put("/reset-journey", checkAdminAuth, catchAsyncError(resetJourney))
 router.get("/journeys-history", checkAuth, catchAsyncError(userJourneys))
 router.get("/get-journey-history", checkAuth, catchAsyncError(getJourneyHistory))
 router.get("/user-journeys-history", checkAdminAuth, catchAsyncError(userJourneysByAdmin))
 router.get("/get-journey-by-id", checkAdminAuth, catchAsyncError(getJourneyByIdForAdmin))
-
 // Journey : end
 
 // custom journys: begin
