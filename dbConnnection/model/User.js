@@ -46,7 +46,7 @@ const UserSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Wallet'
     },
-    withdrawalPinSalt: String,
+    walletName: String,
     withdrawalPin: {type: String, default: "null"},
     walletAddress: String,
     walletType: String,

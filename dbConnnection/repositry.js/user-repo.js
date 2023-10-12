@@ -29,7 +29,6 @@ function createPracticeAccount ({ username, email, mainAccount, role, hashedPass
         mainAccount,
         accountLevel,
         adminCode,
-        withdrawalPin
     })
     return user.save()
 }
@@ -102,7 +101,7 @@ function    getUser({sort, pageNumber, pageSize}) {//need test
     .populate('accountLevel', 'level')
     .populate('walletId', 'value')
     .populate('currentJourney', 'currentStage maxStagesNumber status')
-    .select('-otp -salt -hashedPassword -hashedPassport -withdrawalPinSalt')
+    .select('-otp -salt -hashedPassword -hashedPassport')
     .sort({ createdAt: sort })
     .skip(skipCount)
     .limit(pageSize)
@@ -115,7 +114,7 @@ function getUserByRole({role, pageNumber, pageSize, sort}) {//need test
     .populate('accountLevel', 'level')
     .populate('walletId', 'value')
     .populate('currentJourney', 'currentStage maxStagesNumber status')
-    .select('-otp -salt -hashedPassword -hashedPassport -withdrawalPinSalt')
+    .select('-otp -salt -hashedPassword -hashedPassport')
     .sort({ createdAt: sort })
     .skip(skipCount)
     .limit(pageSize)
@@ -135,7 +134,7 @@ function getUserInfo({id}){
     return userModel.findById(id)
     .populate('accountLevel', 'level')
     .populate('walletId', 'value')
-    .select('-otp -hashedPassword -hashedPassport -adminRef -withdrawalPinSalt')
+    .select('-otp -hashedPassword -hashedPassport -adminRef')
 }
 
 function editUser({userId, updateData}){

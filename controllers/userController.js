@@ -531,38 +531,38 @@ const searchUser = async (req, res, next) => {
     })
 }
 
-const addPinWithdrawal = async (req, res, next) => {
-    const { pin } = req.body
-    if (!pin){
-        return next(new ErrorHandler(FieldsMandotry, 400))
-    }
-    if (pin.length < 4){
-        return next(new ErrorHandler(ShortPin, 400))
-    }
-    const user = await getUserById({id: req.userData.user._id})
-    if (user.withdrawalPinSalt){
-        return next(new ErrorHandler(SomethingWentWrong, 400))
-    }
+// const addPinWithdrawal = async (req, res, next) => {
+//     const { pin } = req.body
+//     if (!pin){
+//         return next(new ErrorHandler(FieldsMandotry, 400))
+//     }
+//     if (pin.length < 4){
+//         return next(new ErrorHandler(ShortPin, 400))
+//     }
+//     const user = await getUserById({id: req.userData.user._id})
+//     if (user.withdrawalPinSalt){
+//         return next(new ErrorHandler(SomethingWentWrong, 400))
+//     }
 
-    const {hashedPassword, salt} = await generateSecurePassword(pin)
-    const data = await editUser({userId: req.userData.user._id, updateData: {withdrawalPinSalt: salt, withdrawalPin: hashedPassword}})
-    if (!data){
-        return next(new ErrorHandler(SomethingWentWrong, 500))
-    }
-    const userData = await getUserById({id: req.userData.user._id })
-    userData.salt = undefined
+//     const {hashedPassword, salt} = await generateSecurePassword(pin)
+//     const data = await editUser({userId: req.userData.user._id, updateData: {withdrawalPinSalt: salt, withdrawalPin: hashedPassword}})
+//     if (!data){
+//         return next(new ErrorHandler(SomethingWentWrong, 500))
+//     }
+//     const userData = await getUserById({id: req.userData.user._id })
+//     userData.salt = undefined
 
-    const token = await createAccessToken({payload:userData, expirationIn: '90d'})
+//     const token = await createAccessToken({payload:userData, expirationIn: '90d'})
 
-    res.cookie(Authorization, {token}, {httpOnly: true})
-    res.cookie(UserData, userData)
+//     res.cookie(Authorization, {token}, {httpOnly: true})
+//     res.cookie(UserData, userData)
 
-    return res.json({
-        token,
-        success: true,
-        message: "Pin saved successfully",
-    })
-}
+//     return res.json({
+//         token,
+//         success: true,
+//         message: "Pin saved successfully",
+//     })
+// }
 
 const updatePinWithdrawal = async (req, res, next) => {
     const { oldPin, newPin } = req.body
@@ -600,12 +600,12 @@ const updatePinWithdrawal = async (req, res, next) => {
 }
 
 const saveWalletAddress = async (req, res, next) => {
-    const { address, cardType } = req.body
-    if (!address || !cardType){
+    const { address, cardType, name } = req.body
+    if (!address || !cardType || !walletName){
         return next(new ErrorHandler(FieldsMandotry, 400))
     }
 
-    const data = await editUser({userId: req.userData.user._id, updateData: {walletAddress: address, walletType: cardType}})
+    const data = await editUser({userId: req.userData.user._id, updateData: {walletAddress: address, walletType: cardType, walletName}})
     if (!data){
         return next(new ErrorHandler(SomethingWentWrong, 500))
     }
@@ -636,7 +636,7 @@ module.exports = {
     resetUserPassword,
     searchUser,
     getUsersInfo,
-    addPinWithdrawal,
+    // addPinWithdrawal,
     updatePinWithdrawal,
     saveWalletAddress
 }

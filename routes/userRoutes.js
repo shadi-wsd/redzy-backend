@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser, singIn, checkOtp, forgetPassword, changePassword, getSignIn, resendOtp, logout, getUsers, getUserById, getUsersById, resetPassword, checkPhoneOtp, getUsersByRole, resendPhoneOtp, updateUser, resetUserPassword, searchUser, getUsersInfo, addPinWithdrawal, updatePinWithdrawal, saveWalletAddress } = require("../controllers/userController");
+const { createUser, singIn, checkOtp, forgetPassword, changePassword, getSignIn, resendOtp, logout, getUsers, getUserById, getUsersById, resetPassword, checkPhoneOtp, getUsersByRole, resendPhoneOtp, updateUser, resetUserPassword, searchUser, getUsersInfo, updatePinWithdrawal, saveWalletAddress } = require("../controllers/userController");
 const bodyParser = require("body-parser");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { checkForgetPasswordAuth, checkDevCreateAdmin, checkAdminAuth, checkPassportAuth, checkNotAuth, checkSuperAdminAuth, checkAuth, checkChatAuth } = require("../middleware/checkAuth");
