@@ -600,7 +600,7 @@ const updatePinWithdrawal = async (req, res, next) => {
 }
 
 const saveWalletAddress = async (req, res, next) => {
-    const { address, cardType, name } = req.body
+    const { address, cardType, walletName } = req.body
     if (!address || !cardType || !walletName){
         return next(new ErrorHandler(FieldsMandotry, 400))
     }
