@@ -9,5 +9,6 @@ module.exports = {
     messagesModel: require('./Messages'),
     journeyModel: require('./Journey'),
     journeyHistoryModel: require('./JourneyHistory'),
-    customJourneyModel: require('./CustomJourney')
+    customJourneyModel: require('./CustomJourney'),
+    parameterModel: require('./Parameter')
 }
