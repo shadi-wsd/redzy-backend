@@ -132,15 +132,21 @@ const placeOrder = async (req, res, next) => {
     const currentStageFlag = await checkCurrentStage(journey[0].currentStage, journey[0].breakPoints)//check if the user is in the break point
     if (currentStageFlag){
         var product = await getProductsById({ids: [currentStageFlag.productId._id.toString()]})
-        var commissionVal = journey[0]?.commissionPoints || commissionLevel.commissionValue
+        var commissionVal = journey[0]?.pointsCommission || commissionLevel.commissionValue
     }else{
         if (journey[0]?.productValue){
             var maxPrice = ((wallet.value * journey[0].productValue) / 100).toFixed(2) 
         }else{
             var maxPrice = wallet.value
         }
-        console.log(maxPrice);
-        var product = await getRandomProductWithMaxPrice({maxPrice, usedProducts: journey[0].usedProducts})
+
+        if (journey[0]?.productValueMin){
+            var minPrice = ((wallet.value * journey[0].productValueMin) / 100).toFixed(2) 
+        }else{
+            var minPrice = 0
+        }
+
+        var product = await getRandomProductWithMaxPrice({minPrice, maxPrice, usedProducts: journey[0].usedProducts})
         var commissionVal = commissionLevel.commissionValue
     }
 

@@ -37,7 +37,7 @@ async function getProduct({pageNumber, pageSize}){
     // .limit(pageSize)
 }
 
-async function getRandomProductWithMaxPrice({maxPrice, usedProducts}) {
+async function getRandomProductWithMaxPrice({minPrice, maxPrice, usedProducts}) {
     const countQuery = { price: { $gte: minPrice, $lt: maxPrice }, _id: {$nin: usedProducts} };
     const totalProducts = await productModel.countDocuments(countQuery);
 
