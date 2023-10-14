@@ -277,7 +277,10 @@ const resetJourney = async (req, res, next) => {
     if(!canceledJourney){
         return next(new ErrorHandler(SomethingWentWrong, 400))
     }
+
     const journey = await createJourney({userId: canceledJourney.userId, adminId: req.userData.user._id, breakPoints: canceledJourney.breakPoints, maxStagesNumber: canceledJourney.maxStagesNumber, productValue: canceledJourney.productValue, pointsCommission: canceledJourney.pointsCommission})
+    const currentJourney = journey._id 
+    const newUser = await editUser({userId, updateData: {currentJourney}})//add this in thumbtack
 
     return res.json({
         success: true,
