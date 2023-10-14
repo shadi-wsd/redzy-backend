@@ -1,13 +1,15 @@
 const { journeyModel } = require("../model/index")
 
-function createJourney({userId, adminId, breakPoints, maxStagesNumber, productValue, pointsCommission}){
+function createJourney({userId, adminId, breakPoints, maxStagesNumber, couponsReward, productValue, pointsCommission, productValueMin}){
     const journey = new journeyModel({
         userId,
         adminId,
         breakPoints,
         maxStagesNumber,
+        productValueMin,
         productValue,
-        pointsCommission
+        pointsCommission,
+        couponsReward,
     })
 
     return journey.save()

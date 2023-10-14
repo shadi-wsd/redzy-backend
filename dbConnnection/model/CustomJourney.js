@@ -14,8 +14,10 @@ const CustomJourneySchema = new Schema({
         }
     ],
     maxStagesNumber: Number,
-    productValue: Number,
-    pointsCommission: {type: Number, default: null}
+    productValueMin: {type: Number, default: 0},
+    productValue: {type: Number, default: 100},
+    pointsCommission: {type: Number, default: null},
+    couponsReward:Number
 }, { timestamps: true })
 
 

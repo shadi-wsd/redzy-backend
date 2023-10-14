@@ -12,7 +12,7 @@ const { chargeWallet, getWalletsById, getWalletsByUserId, editWalletValue, withd
 const { upload } = require("../helpers/multer");
 const Journey = require("../dbConnnection/model/Journey");
 const { placeJourney, editJourneys, placeOrder, submitOrder, getLastJourneyInof, cancelJourney, userJourneys, getJourneyHistory, userJourneysByAdmin, getJourneyByIdForAdmin, resetJourney } = require("../controllers/journeyController");
-const { getMyTransactions } = require("../controllers/transactionsController");
+const { getMyTransactions, getTransaction } = require("../controllers/transactionsController");
 const { createCustomJourneys, editCustomJourneys, getCustomJourney, getCustomJourneys } = require("../controllers/customJourneyController");
 const { addParameter, updateParameter, getParametersById, getParameters, getParametersByName } = require("../controllers/parametersController");
 const router = express.Router();
@@ -112,7 +112,8 @@ router.get("/get-custom-journeys", checkAdminAuth, catchAsyncError(getCustomJour
 // custom journys: end
 
 // transactions : begin
-router.get("/get-transactions", checkAuth, catchAsyncError(getMyTransactions))
+router.get("/get-my-transactions", checkAuth, catchAsyncError(getMyTransactions))
+router.get("/get-transactions", checkAdminAuth, catchAsyncError(getTransaction))
 // transactions : end
 
 

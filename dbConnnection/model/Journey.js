@@ -28,8 +28,10 @@ const JourneySchema = new Schema({
     currentStage: {type: Number, default: 1},
     maxStagesNumber: Number,
     status: {type: String, default: InitJourney},
-    productValue: Number,
-    pointsCommission: {type: Number, default: null}
+    productValueMin: {type: Number, default: 0},
+    productValue: {type: Number, default: 100},
+    pointsCommission: {type: Number, default: null},
+    couponsReward: {type: Number, default: null},
 }, { timestamps: true })
 
 

@@ -38,8 +38,7 @@ async function getProduct({pageNumber, pageSize}){
 }
 
 async function getRandomProductWithMaxPrice({maxPrice, usedProducts}) {
-    console.log(maxPrice);
-    const countQuery = { price: { $lt: maxPrice }, _id: {$nin: usedProducts} };
+    const countQuery = { price: { $gte: minPrice, $lt: maxPrice }, _id: {$nin: usedProducts} };
     const totalProducts = await productModel.countDocuments(countQuery);
 
     if (totalProducts === 0) {
@@ -48,7 +47,7 @@ async function getRandomProductWithMaxPrice({maxPrice, usedProducts}) {
 
     const randomIndex = Math.floor(Math.random() * totalProducts);
     console.log(randomIndex);
-    return productModel.findOne({ price: { $lt: maxPrice }, _id: {$nin: usedProducts} })
+    return productModel.findOne(countQuery)
     .skip(randomIndex);
 
 }

@@ -1,12 +1,14 @@
 const { customJourneyModel } = require("../model")
 
-function createCustomJourney({journeyName, breakPoints, maxStagesNumber, productValue, pointsCommission}){
+function createCustomJourney({journeyName, breakPoints, maxStagesNumber, productValue, couponsReward, pointsCommission, productValueMin}){
     const customJourney = new customJourneyModel({
         journeyName,
         breakPoints,
         maxStagesNumber,
+        productValueMin,
         productValue,
-        pointsCommission
+        pointsCommission,
+        couponsReward,
     })
 
     return customJourney.save()

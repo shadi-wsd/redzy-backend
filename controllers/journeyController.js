@@ -9,7 +9,8 @@ const { UserNotFound, orderPointBiggerThanLastStage, FieldsMandotry, NoData, Ini
 const ErrorHandler = require("../utils/errorHandler")
 
 const placeJourney = async(req, res, next) => {
-    const {userId, breakPoints, maxStagesNumber, productValPerc, pointsCommission} = req.body
+    const {userId, breakPoints, maxStagesNumber, productValPercMin, productValPerc, pointsCommission, couponsReward} = req.body
+
     if (!userId){
         return next(new ErrorHandler(FieldsMandotry, 400))
     }
@@ -31,6 +32,7 @@ const placeJourney = async(req, res, next) => {
     const adminId = req.userData.user._id
     const stagesNumber = maxStagesNumber || commissionLevel?.ticketsNumber || 40 //need to ask how to get it
     const productValue = productValPerc || 100
+    const productValueMin = productValPercMin || 0
     
     const flag = await checkBreakPoints({breakPoints, maxStagesNumber: stagesNumber})
     if (!flag){
@@ -38,7 +40,7 @@ const placeJourney = async(req, res, next) => {
     }
 
 
-    const journey = await createJourney({userId, adminId, breakPoints, maxStagesNumber: stagesNumber, productValue, pointsCommission})
+    const journey = await createJourney({userId, adminId, breakPoints, maxStagesNumber: stagesNumber, productValueMin, productValue, pointsCommission, couponsReward})
     const journeyUser = await editUser({userId, updateData: {currentJourney: journey._id}})
 
     return res.status(201).json({
@@ -51,7 +53,8 @@ const placeJourney = async(req, res, next) => {
 }
 
 const editJourneys = async(req, res, next) => {
-    const {journeyId, userId, breakPoints, maxStagesNumber, productValPerc, pointsCommission} = req.body
+    const {journeyId, userId, breakPoints, maxStagesNumber, productValPercMin, productValPerc, pointsCommission, couponsReward} = req.body
+
     console.log("journeyId: ", journeyId);
     if (!userId || !journeyId){
         return next(new ErrorHandler(FieldsMandotry, 400))
@@ -79,7 +82,7 @@ const editJourneys = async(req, res, next) => {
     if (!user){
         return next(new ErrorHandler(UserNotFound, 404))
     }
-    const updateData = {userId, breakPoints, maxStagesNumber, productValPerc, pointsCommission}
+    const updateData = {userId, breakPoints, maxStagesNumber, productValueMin: productValPercMin, productValue: productValPerc, pointsCommission, couponsReward}
     const editedJourney = await editJourney({journeyId, updateData})
     return res.status(201).json({
         success: true,

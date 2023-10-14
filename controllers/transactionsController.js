@@ -1,4 +1,4 @@
-const { getUserTransactions } = require("../dbConnnection/repositry.js/transactions-repo")
+const { getUserTransactions, getTransactions } = require("../dbConnnection/repositry.js/transactions-repo")
 const { NoData } = require("../instance")
 const ErrorHandler = require("../utils/errorHandler")
 
@@ -15,6 +15,16 @@ const getMyTransactions = async (req, res, next) => {
     })
 } 
 
+const getTransaction = async (req, res, next) =>{
+    const transactions = await getTransactions()
+    return res.json({
+        success: true,
+        message: "got transactions successfully",
+        transactions
+    })
+}
+
 module.exports = {
-    getMyTransactions
+    getMyTransactions,
+    getTransaction
 }

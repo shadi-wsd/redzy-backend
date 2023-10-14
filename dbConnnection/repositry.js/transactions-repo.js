@@ -31,6 +31,13 @@ async function getWithdrawalRequestsByAdmin(){
     .populate('walletId', 'status')
 }
 
+async function getTransactions(){
+    return transactionModel.find()
+    .populate('userId', 'username')
+    .populate('adminId', 'username')
+    .populate('walletId', 'status')
+}
+
 async function editTransaction({transactionId, updateData}){
     return transactionModel.findByIdAndUpdate(
         transactionId, 
@@ -61,5 +68,6 @@ module.exports = {
     editTransaction,
     getTransactionByID,
     getUserTransactions,
-    getLastUserTransactions
+    getLastUserTransactions,
+    getTransactions
 }
