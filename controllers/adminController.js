@@ -28,9 +28,9 @@ const createSuperAdminAccount = async (req, res, next) => {
         return next(new ErrorHandler(ShortPassword, 400));
     }
 
-    if (!isValidEmail(email)) {
-        return next(new ErrorHandler(NotValidEmail, 400));
-    }
+    // if (!isValidEmail(email)) {
+    //     return next(new ErrorHandler(NotValidEmail, 400));
+    // }
     
     // hashing password::begin
     const { hashedPassword, salt } = await generateSecurePassword(password)
