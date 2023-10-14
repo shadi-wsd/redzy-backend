@@ -495,13 +495,23 @@ const getUsersInfo = async (req, res, next) => {
 }
 
 const updateUser = async (req, res, next) => {
-    const {userId, status, accountLevel, accountStatus} = req.body
+    const {userId, status, accountLevel, accountStatus, newPassword, withdrawalPin} = req.body
     
     if (!userId) {
         return next(new ErrorHandler(FieldsMandotry, 400))
     }
-    const updateData = { status, accountLevel, accountStatus}
+    if(newPassword){
+        if (newPassword.length < 8){
+            return next(new ErrorHandler(ShortPassword, 400));
+        }
+        var {hashedPassword, salt} = await generateSecurePassword(newPassword)
+    }
 
+    if(newPassword){
+        var updateData = { status, accountLevel, accountStatus, withdrawalPin, hashedPassword, salt}
+    }else{
+        var updateData = { status, accountLevel, accountStatus, withdrawalPin}
+    }
     const editedUser = await editUser({userId, updateData})
 
     if (!editedUser){
