@@ -22,8 +22,7 @@ router.use(bodyParser.urlencoded({extended: true}))
 
 
 //admin begin
-// checkDevCreateAdmin
-router.post("/create-super-admin", checkSuperAdminAuth, catchAsyncError(createSuperAdminAccount))//dev
+router.post("/create-super-admin", checkDevCreateAdmin, catchAsyncError(createSuperAdminAccount))//dev
 // router.post("/passport-checkIn", checkAdminAuth, catchAsyncError(passportCheckIn))//delete
 router.post("/create-admin", checkAdminAuth, catchAsyncError(createAdmin))//super admin
 router.post("/create-practice-account", checkAdminAuth, catchAsyncError(createPracticeUser))//admin
