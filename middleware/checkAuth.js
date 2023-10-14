@@ -7,7 +7,7 @@ const ErrorHandler = require("../utils/errorHandler");
 // Middleware function to check authentication
 const checkAuth = async (req, res, next) => {
     // Extract the token from the request headers (you can use 'Authorization' header with 'Bearer' prefix)
-    const token = req.cookies["authorization"]?.token || req.cookies?.authorization;
+    const token = req.cookies["authorization"]?.token || req.cookies?.authorization || req.cookies["authorizationAdmin"]?.token
     if (!token) {
         return res.status(401).json({
             success: false,
@@ -44,7 +44,7 @@ const checkAuth = async (req, res, next) => {
 
 const checkAdminAuth = async (req, res, next) => {
     // Extract the token from the request headers (you can use 'Authorization' header with 'Bearer' prefix)
-    const token = req.cookies["authorization"]?.token;
+    const token = req.cookies["authorizationAdmin"]?.token;
 
     if (!token) {
         return res.status(401).json({
@@ -104,7 +104,7 @@ const checkNotAuth = async (req, res, next) => {
 
 const checkNotAuthAdmin = async (req, res, next) => {
     // Extract the token from the request headers (you can use 'Authorization' header with 'Bearer' prefix)
-    const token = req.cookies["authorization"]?.token;
+    const token = req.cookies["authorizationAdmin"]?.token;
 
     if (token || !isTokenBlacklisted(token)) {
         const decodedToken = await verifyToken(token)
@@ -190,7 +190,7 @@ const checkPassportAuth = async (req, res, next) => {
 
 const checkSuperAdminAuth = async (req, res, next) => {
     // Extract the token from the request headers (you can use 'Authorization' header with 'Bearer' prefix)
-    const token = req.cookies["authorization"]?.token;
+    const token = req.cookies["authorizationAdmin"]?.token;
 
     if (!token) {
         return res.status(401).json({

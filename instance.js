@@ -42,6 +42,7 @@ module.exports.YouHavePendingRequest = "you have pending request"
 
 // Auth Tokens and cookies: begin
 module.exports.Authorization = "authorization"
+module.exports.AuthorizationAdmin = "authorizationAdmin"
 module.exports.UserData = "userData"
 module.exports.PassportToken = "passportToken"
 module.exports.ForgetPasswordToken = "forget-password-token"

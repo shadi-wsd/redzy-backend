@@ -44,7 +44,8 @@ const {
     oldPasswordWrong, 
     ShortPin, 
     Blocked, 
-    BlockedAccount } = require("../instance");
+    BlockedAccount, 
+    AuthorizationAdmin} = require("../instance");
 
 const ErrorHandler = require("../utils/errorHandler");
 
@@ -168,7 +169,12 @@ const singIn = async (req, res, next) => {
     const token = await createAccessToken({payload:userRes, expirationIn: '90d'})
     const userData = userRes
 
-    res.cookie(Authorization, {token}, {httpOnly: true})
+    if (userData?.role == SuperAdmin || userData?.role == Admin){
+        res.cookie(AuthorizationAdmin, {token}, {httpOnly: true})
+    }else{
+        res.cookie(Authorization, {token}, {httpOnly: true})
+    }
+    
     res.cookie(UserData, userData)
 
     return res.status(200).json({
