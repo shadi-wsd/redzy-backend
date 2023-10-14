@@ -268,7 +268,7 @@ const cancelJourney = async (req, res, next) => {
 }
 
 const resetJourney = async (req, res, next) => {
-    const { journeyId } = req.body
+    const { userId, journeyId } = req.body
     
     if (!journeyId){
         return next(new ErrorHandler(FieldsMandotry, 400))
