@@ -102,6 +102,25 @@ const checkNotAuth = async (req, res, next) => {
     next();
 }
 
+const checkNotAuthAdmin = async (req, res, next) => {
+    // Extract the token from the request headers (you can use 'Authorization' header with 'Bearer' prefix)
+    const token = req.cookies["authorization"]?.token;
+
+    if (token || !isTokenBlacklisted(token)) {
+        const decodedToken = await verifyToken(token)
+        const userData = decodedToken.user
+        if (decodedToken && (decodedToken.user.role === Admin || decodedToken.user.role === SuperAdmin)) {
+            req.userData = decodedToken;
+            return res.json({
+                success: true,
+                message: "user already loged in",
+                userData
+            })
+        }
+    }
+    next();
+}
+
 // Middleware function to check authentication
 const checkForgetPasswordAuth = async (req, res, next) => {
     // Extract the token from the request headers (you can use 'Authorization' header with 'Bearer' prefix)
@@ -231,5 +250,6 @@ module.exports = {
     checkAdminAuth, 
     checkPassportAuth, 
     checkSuperAdminAuth,
-    checkChatAuth
+    checkChatAuth,
+    checkNotAuthAdmin
 }
