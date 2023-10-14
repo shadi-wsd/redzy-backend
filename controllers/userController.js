@@ -174,7 +174,7 @@ const singIn = async (req, res, next) => {
     }else{
         res.cookie(Authorization, {token}, {httpOnly: true})
     }
-    
+
     res.cookie(UserData, userData)
 
     return res.status(200).json({
@@ -409,7 +409,7 @@ const resetUserPassword = async (req, res, next) => {
 }
 
 const logout = async (req, res, next) => {
-    const token = req.cookies["authorization"]?.token;
+    const token = req.cookies["authorization"]?.token || req.cookies["authorizationAdmin"]?.token;
     if (!token){
         return next(new ErrorHandler(NotAuthenticated, 401))
     }
@@ -420,6 +420,7 @@ const logout = async (req, res, next) => {
 
     addToBlacklist(token)
     res.clearCookie('authorization', { httpOnly: true });
+    res.clearCookie('authorizationAdmin', { httpOnly: true });
     
     return res.json({
         success: true,
