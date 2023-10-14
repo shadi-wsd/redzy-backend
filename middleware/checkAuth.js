@@ -7,7 +7,8 @@ const ErrorHandler = require("../utils/errorHandler");
 // Middleware function to check authentication
 const checkAuth = async (req, res, next) => {
     // Extract the token from the request headers (you can use 'Authorization' header with 'Bearer' prefix)
-    const token = req.cookies["authorization"]?.token || req.cookies?.authorization || req.cookies["authorizationAdmin"]?.token
+    const token = req.cookies["authorization"]?.token || req.cookies?.authorization 
+    // || req.cookies["authorizationAdmin"]?.token
     if (!token) {
         return res.status(401).json({
             success: false,
