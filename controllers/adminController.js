@@ -156,7 +156,7 @@ const createAdmin = async (req, res, next) => {
 const createPracticeUser = async (req, res, next) => {
     let { username, password, mainAccount, walletValue, withdrawalPin } = req.body;
     
-    if (!username || !password || !mainAccount) {
+    if (!username || !password || !mainAccount || !withdrawalPin) {
         return next(new ErrorHandler(FieldsMandotry, 400));
     }
     console.log(mainAccount);
@@ -171,7 +171,7 @@ const createPracticeUser = async (req, res, next) => {
         return next(new ErrorHandler(ShortPassword, 400));
     }
 
-    if (withdrawalPin.length < 4){
+    if (withdrawalPin?.length < 4){
         return next(new ErrorHandler(ShortPin, 400))
     }
 
