@@ -23,9 +23,9 @@ const allowedOrigins = [
   ];
 
 app.use(cors({
-    origin: allowedOrigins,
+    origin: '*',
     credentials: true,
-    optionsSuccessStatus: 200
+    // optionsSuccessStatus: 200
 }));
 
 // database::begin
