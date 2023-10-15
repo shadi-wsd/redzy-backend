@@ -32,7 +32,7 @@ const editCommissionLevels = async (req, res, next) => {
     if (!level && !commissionValue){
         return next(new ErrorHandler(AtLeastOneFieldRequired, 400))
     }
-    const updateData = {level, commissionValue, updatedBy: req.userData.user.username}
+    const updateData = {level, commissionValue, ticketsNumber, updatedBy: req.userData.user.username}
     const editedCommissionLevel = await editCommissionLevel({commissionLevelId, updateData})
     if (!editedCommissionLevel) {
         return next(new ErrorHandler(SomethingWentWrong, 500))
