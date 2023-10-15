@@ -16,10 +16,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Define an array of allowed origins (domains)
 const allowedOrigins = [
-    'http://localhost:3000',
-    'https://www.rezdy.ca',
-    'https://rezdy.ca',
-    'https://hr.rezdy.ca',
+    '*',
+    // 'https://www.rezdy.ca',
+    // 'https://rezdy.ca',
+    // 'https://hr.rezdy.ca',
   ];
 
 app.use(cors({
