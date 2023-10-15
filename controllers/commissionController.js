@@ -28,7 +28,7 @@ const createCommissionLevels = async (req, res, next) => {
 }
 
 const editCommissionLevels = async (req, res, next) => {
-    const {level, commissionValue, commissionLevelId} = req.body
+    const {level, commissionValue, ticketsNumber, commissionLevelId} = req.body
     if (!level && !commissionValue){
         return next(new ErrorHandler(AtLeastOneFieldRequired, 400))
     }
