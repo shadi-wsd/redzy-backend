@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser, singIn, checkOtp, forgetPassword, changePassword, getSignIn, resendOtp, logout, getUsers, getUserById, getUsersById, resetPassword, checkPhoneOtp, getUsersByRole, resendPhoneOtp, updateUser, resetUserPassword, searchUser, getUsersInfo, updatePinWithdrawal, saveWalletAddress } = require("../controllers/userController");
+const { createUser, singIn, checkOtp, forgetPassword, changePassword, getSignIn, resendOtp, logout, getUsers, getUserById, getUsersById, resetPassword, checkPhoneOtp, getUsersByRole, resendPhoneOtp, updateUser, resetUserPassword, searchUser, getUsersInfo, updatePinWithdrawal, saveWalletAddress, logoutDashboard } = require("../controllers/userController");
 const bodyParser = require("body-parser");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { checkForgetPasswordAuth, checkDevCreateAdmin, checkAdminAuth, checkPassportAuth, checkNotAuth, checkSuperAdminAuth, checkAuth, checkChatAuth, checkNotAuthAdmin } = require("../middleware/checkAuth");
@@ -34,6 +34,7 @@ router.post("/create-practice-account", checkAdminAuth, catchAsyncError(createPr
 router.post("/signup", catchAsyncError(createUser))
 router.post("/signin", catchAsyncError(singIn))
 router.delete("/logout", catchAsyncError(logout))
+router.delete("/logout-dashboard", catchAsyncError(logoutDashboard))
 router.get("/get-signin", checkNotAuth, catchAsyncError(getSignIn))
 router.get("/get-signin-dashboard", checkNotAuthAdmin, catchAsyncError(getSignIn))
 // router.post("/check-otp", catchAsyncError(checkOtp))

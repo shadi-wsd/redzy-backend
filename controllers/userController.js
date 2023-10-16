@@ -410,33 +410,41 @@ const resetUserPassword = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
     const token = req.cookies["authorization"]?.token;
-    const adminToken = req.cookies["authorizationAdmin"]?.token;
-    if (!token && !adminToken){
+    if (!token){
         return next(new ErrorHandler(NotAuthenticated, 401))
     }
     
-    if (token){
-        if (isTokenBlacklisted(token)){
-            return next(new ErrorHandler(BlackListedToken, 401))
-        }
-        addToBlacklist(token)
-        res.clearCookie('authorization', { httpOnly: true });
-
-    }else if(adminToken){
-        if (isTokenBlacklisted(adminToken)){
-            return next(new ErrorHandler(BlackListedToken, 401))
-        }
-        addToBlacklist(adminToken)
-        res.clearCookie('authorizationAdmin', { httpOnly: true });
-    }else{
-        return next(new ErrorHandler(SomethingWentWrong, 500))
+    if (isTokenBlacklisted(token)){
+        return next(new ErrorHandler(BlackListedToken, 401))
     }
 
-    
+    addToBlacklist(token)
+    res.clearCookie('authorization', { httpOnly: true });
+
+
+
     return res.json({
         success: true,
         message: 'Logged out successfully'
     })
+}
+
+const logoutDashboard = async (req, res, next) => {
+    const adminToken = req.cookies["authorizationAdmin"]?.token;
+    if (!adminToken){
+        return next(new ErrorHandler(NotAuthenticated, 401))
+    }
+    if (isTokenBlacklisted(adminToken)){
+        return next(new ErrorHandler(BlackListedToken, 401))
+    }
+    addToBlacklist(adminToken)
+    res.clearCookie('authorizationAdmin', { httpOnly: true });
+
+    return res.json({
+        success: true,
+        message: 'Logged out successfully'
+    })
+
 }
 
 const getUsers = async (req, res, next) => {
@@ -666,5 +674,6 @@ module.exports = {
     getUsersInfo,
     // addPinWithdrawal,
     updatePinWithdrawal,
-    saveWalletAddress
+    saveWalletAddress,
+    logoutDashboard
 }
