@@ -158,7 +158,7 @@ const checkForgetPasswordAuth = async (req, res, next) => {
 
 const checkDevCreateAdmin = async (req, res, next) => {
     const { adminPasscode } = req.body
-    if (adminPasscode !== "0000") {
+    if (adminPasscode != "0000") {
         return next(new ErrorHandler("Unauthorized", 401))
     }
     next()
