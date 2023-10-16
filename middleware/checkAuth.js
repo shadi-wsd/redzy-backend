@@ -158,7 +158,6 @@ const checkForgetPasswordAuth = async (req, res, next) => {
 
 const checkDevCreateAdmin = async (req, res, next) => {
     const { adminPasscode } = req.body
-    console.log(create_super_admin_key);
     if (adminPasscode !== process.env.SUPER_KEY) {
         return next(new ErrorHandler("Unauthorized", 401))
     }

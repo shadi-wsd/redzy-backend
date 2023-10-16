@@ -2,12 +2,13 @@ const { default: mongoose } = require("mongoose")
 const { Submitted } = require("../../instance")
 const { journeyHistoryModel } = require("../model/index")
 
-function addToHistory({userId, journeyId, product, commission}){
+function addToHistory({userId, journeyId, product, commission, status}){
     const journeyHistory = new journeyHistoryModel({
         userId,
         journeyId,
         product,
         commission,
+        status
     })
 
     return journeyHistory.save()
@@ -68,10 +69,17 @@ function getJourneysHistoryByUser({journeyId}){
     .sort({ createdAt: -1 })
 }
 
+function getJourneysHistoryByuserIdForUser({userId}){
+    return journeyHistoryModel.find({userId})
+    .populate('userId', 'username')
+    .sort({ createdAt: -1 })
+}
+
 module.exports = {
     addToHistory,
     getLastProduct,
     editHistory,
     getTodayRewards,
-    getJourneysHistoryByUser
+    getJourneysHistoryByUser,
+    getJourneysHistoryByuserIdForUser
 }

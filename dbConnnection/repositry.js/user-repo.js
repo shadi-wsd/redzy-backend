@@ -175,6 +175,12 @@ async function editUser({userId, updateData}){
     )
 }
 
+async function getUserByMainAccount({mainAccount}){
+    return userModel.findById(mainAccount)
+    .populate('walletId', 'value')
+    .select('-otp -salt -hashedPassword -hashedPassport')
+}
+
 module.exports = {
     createNewUser, 
     getUser, 
@@ -193,5 +199,6 @@ module.exports = {
     editUser,
     getAdminByCode,
     searchUsers,
-    getUserInfo
+    getUserInfo,
+    getUserByMainAccount
 }

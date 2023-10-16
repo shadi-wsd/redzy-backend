@@ -2,7 +2,7 @@ const { default: mongoose } = require("mongoose")
 const { createTransaction, getLastUserTransactions } = require("../dbConnnection/repositry.js/transactions-repo")
 const { getUserById, checkUserPassword } = require("../dbConnnection/repositry.js/user-repo")
 const { getWalletById, editWallet, getWalletByUserId } = require("../dbConnnection/repositry.js/wallet-repos")
-const { NoData, SomethingWentWrong, UserNotFound, Charge, NotValidData, Withdrawal, PendingJourney, DoneJourney, NoEnoughMoney, PleaseCompleteYourJourney, UsernameOrPasswordWrong, CanceledJourney, passwordIsWrong, WithdrawalByAdmin } = require("../instance")
+const { NoData, SomethingWentWrong, UserNotFound, Charge, NotValidData, Withdrawal, PendingJourney, DoneJourney, NoEnoughMoney, PleaseCompleteYourJourney, UsernameOrPasswordWrong, CanceledJourney, passwordIsWrong, WithdrawalByAdmin, FieldsMandotry } = require("../instance")
 const ErrorHandler = require("../utils/errorHandler")
 const { getLastJourneyByUserId } = require("../dbConnnection/repositry.js/journey-repo")
 const { hashPassword } = require("../helpers/crypto")
@@ -11,7 +11,9 @@ const chargeWallet = async (req, res, next) => {
     const {clientId, walletId, chargeValue, processName } = req.body 
     const wallet = await getWalletById({walletId})
     const user = await getUserById({id: clientId})
-
+    if(!clientId || !walletId || !chargeValue || !processName){
+        return next(new ErrorHandler(FieldsMandotry, 400))
+    }
 
     const session = await mongoose.startSession();
     session.startTransaction();

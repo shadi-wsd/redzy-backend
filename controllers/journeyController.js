@@ -1,11 +1,29 @@
-const { addToHistory, getLastProduct, editHistory, getTodayRewards, getJourneysHistoryByUser } = require("../dbConnnection/repositry.js/JourneyHistory-repo")
+const { addToHistory, getLastProduct, editHistory, getTodayRewards, getJourneysHistoryByUser, getJourneysHistoryByuserIdForUser } = require("../dbConnnection/repositry.js/JourneyHistory-repo")
 const { getCommissionLevelById } = require("../dbConnnection/repositry.js/commission-repo")
 const { createJourney, editJourney, getJourneyByAdmin, getJourneyByIdAndUserId, getLastJourneyByUserId, getLastJourneyByUserIdForUser, getJourneysByUserIdForUser, getJourneysByUserIdForAdmin, getJourneyById } = require("../dbConnnection/repositry.js/journey-repo")
 const { getProductsById, getRandomProductWithMaxPrice } = require("../dbConnnection/repositry.js/product-repo")
-const { getUserById, editUser } = require("../dbConnnection/repositry.js/user-repo")
+const { getUserById, editUser, getUserByAdminCode, getUserByMainAccount } = require("../dbConnnection/repositry.js/user-repo")
 const { getWalletByUserId, editWallet } = require("../dbConnnection/repositry.js/wallet-repos")
 const { checkBreakPoints, checkCurrentStage } = require("../helpers/journeyChecks")
-const { UserNotFound, orderPointBiggerThanLastStage, FieldsMandotry, NoData, InitJourney, SomethingWentWrong, NoEnoughMoney, DoneJourney, PendingJourney, CompletedYOurJourneysForToday, NoProducts, OngoingJourney, Submited, UserHasAnotherJourney, CanceledJourney, Submitted } = require("../instance")
+const { UserNotFound, 
+    orderPointBiggerThanLastStage, 
+    FieldsMandotry, 
+    NoData, 
+    InitJourney, 
+    SomethingWentWrong, 
+    NoEnoughMoney, 
+    DoneJourney, 
+    PendingJourney, 
+    CompletedYOurJourneysForToday, 
+    NoProducts, 
+    OngoingJourney, 
+    UserHasAnotherJourney, 
+    CanceledJourney, 
+    Submitted, 
+    PracticeType, 
+    Rejected 
+} = require("../instance")
+
 const ErrorHandler = require("../utils/errorHandler")
 
 const placeJourney = async(req, res, next) => {
@@ -222,13 +240,29 @@ const submitOrder = async (req, res, next) => {
         var message = 'Congrats you completed your journey' 
         var status = DoneJourney 
     }else{
-        var message = 'order submited successfully' 
+        var message = 'order submitted successfully' 
         var status = OngoingJourney 
     }
 
     const updateJourney = await editJourney({journeyId, updateData: {status}})
     const updateHistory = await editHistory({id: lastProduct._id, updateData: {status: Submitted}})
-    console.log("updateHistory: ", updateHistory);
+    
+    if (req.userData.user.role === PracticeType){
+        const realAccount = await getUserByMainAccount({mainAccount: req.userData.user.mainAccount})
+        var profit = (0.3 * lastProduct.commission).toFixed(2)
+        if (realAccount?.walletId?.value > 0 ){
+            console.log(realAccount.walletId.id);
+            const history = await addToHistory({userId: realAccount._id, journeyId: null, product: {name: "Ref Account Profit", price: 0}, commission: profit, status: Submitted})
+            console.log("history: ", history);
+            const updateData = {value: realAccount.walletId.value  + parseFloat(profit)}
+            console.log(updateData);
+            const newWallet = await editWallet({walletId: realAccount.walletId.id, updateData})
+            console.log("updateData");
+            
+        }else {
+            const history = await addToHistory({userId: realAccount._id, journeyId: null, product: {name: "Ref Account Profit", price: 0}, commission: profit, status: Rejected})
+        }
+    }
     return res.json({
         success: true,
         message,
@@ -310,12 +344,22 @@ const userJourneys = async (req, res, next) => {
 
 }
 
-const getJourneyHistory = async (req, res, next) => {
+const getSingleJourneyHistory = async (req, res, next) => {
     const { journeyId } = req.query
     if (!journeyId){
         return next(new ErrorHandler(FieldsMandotry, 400))
     }
     const history = await getJourneysHistoryByUser({journeyId})
+
+    return res.json({
+        success: true,
+        message: "Got products successfully",
+        history
+    }) 
+ }
+
+ const getJourneyHistory = async (req, res, next) => {
+    const history = await getJourneysHistoryByuserIdForUser({userId: req.userData.user._id})
 
     return res.json({
         success: true,
@@ -373,5 +417,6 @@ module.exports = {
     getJourneyHistory,
     userJourneysByAdmin,
     getJourneyByIdForAdmin,
-    resetJourney
+    resetJourney,
+    getSingleJourneyHistory
 }
