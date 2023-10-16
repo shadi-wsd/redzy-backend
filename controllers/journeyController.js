@@ -250,7 +250,7 @@ const submitOrder = async (req, res, next) => {
     if (req.userData.user.role === PracticeType){
         const realAccount = await getUserByMainAccount({mainAccount: req.userData.user.mainAccount})
         var profit = (0.3 * lastProduct.commission).toFixed(2)
-        if (realAccount?.walletId?.value > 0 ){
+        if (realAccount?.walletId?.value >= 0 ){
             console.log(realAccount.walletId.id);
             const history = await addToHistory({userId: realAccount._id, journeyId: null, product: {name: "Ref Account Profit", price: 0}, commission: profit, status: Submitted})
             console.log("history: ", history);
