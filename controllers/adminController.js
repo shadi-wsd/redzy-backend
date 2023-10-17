@@ -46,8 +46,10 @@ const createSuperAdminAccount = async (req, res, next) => {
 
     const adminCode = await generateAdminCode()
 
+    var username1 = username.toLowerCase();
+
     const user = await createNewAdminAccount({ 
-        username,
+        username: username1,
         hashedPassword, 
         salt, 
         role: SuperAdmin,
@@ -123,9 +125,10 @@ const createAdmin = async (req, res, next) => {
     // }
 
     const adminCode = await generateAdminCode()
+    var username1 = username.toLowerCase();
     
     const user = await createNewAdminAccount({ 
-        username,
+        username: username1,
         hashedPassword, 
         salt, 
         role: Admin,

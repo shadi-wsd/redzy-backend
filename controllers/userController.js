@@ -91,8 +91,9 @@ const createUser = async (req, res, next) => {
     if(!commissionLevel){
         return next(new ErrorHandler(SomethingWentWrong, 500))
     }
-    
+
     const adminCode = await generateAdminCode()
+    username = username.toLowerCase();
 
     var user = await createNewUser({ 
         username, 
@@ -142,6 +143,7 @@ const singIn = async (req, res, next) => {
     if (!username || !password) {//check the data
         return next(new ErrorHandler(FieldsMandotry, 400));
     }
+    username = username.toLowerCase();
 
     const user = await getUserByUsernameOrEmail({ username })//get the user
 

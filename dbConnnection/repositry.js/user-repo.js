@@ -100,6 +100,7 @@ function    getUser({sort, pageNumber, pageSize}) {//need test
     .populate('adminRef', 'username')
     .populate('accountLevel', 'level')
     .populate('walletId', 'value')
+    .populate('mainAccount', 'username')
     .populate('currentJourney', 'currentStage maxStagesNumber status')
     .select('-otp -salt -hashedPassword -hashedPassport')
     .sort({ createdAt: sort })
