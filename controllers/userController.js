@@ -180,7 +180,7 @@ const singIn = async (req, res, next) => {
     }else{
         res.cookie(Authorization, {token}, {httpOnly: true})
     }
-
+    const editedUser = await editUser({userId: user._id, updateData: {lastLogin: new Date()}})
     res.cookie(UserData, userData)
 
     return res.status(200).json({
