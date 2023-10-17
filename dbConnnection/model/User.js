@@ -53,7 +53,8 @@ const UserSchema = new Schema({
     currentJourney: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Journey'
-    }
+    },
+    lastLogin: {type: Date, default: null}
     
 }, { timestamps: true })
 
