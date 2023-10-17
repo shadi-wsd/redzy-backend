@@ -83,6 +83,10 @@ const editJourneys = async(req, res, next) => {
         return next(new ErrorHandler(NoData, 404))
     }
     var flag = true
+
+    if(maxStagesNumber && maxStagesNumber > journey?.currentStage){
+        return next(new ErrorHandler(`the user already in Stage: ${journey?.currentStage}, you can't insert max stages number: ${maxStagesNumber}`, 404))
+    }    
     
     var stagesNumber = maxStagesNumber || journey?.maxStagesNumber || 40
 
