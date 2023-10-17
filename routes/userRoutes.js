@@ -15,6 +15,7 @@ const { placeJourney, editJourneys, placeOrder, submitOrder, getLastJourneyInof,
 const { getMyTransactions, getTransaction } = require("../controllers/transactionsController");
 const { createCustomJourneys, editCustomJourneys, getCustomJourney, getCustomJourneys } = require("../controllers/customJourneyController");
 const { addParameter, updateParameter, getParametersById, getParameters, getParametersByName } = require("../controllers/parametersController");
+const { saveLogs } = require("../middleware/logs");
 const router = express.Router();
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({extended: true}))
@@ -43,16 +44,16 @@ router.post("/check-phone-otp", catchAsyncError(checkPhoneOtp))
 router.post("/resend-phone-otp", catchAsyncError(resendPhoneOtp))
 router.post("/forget-password", catchAsyncError(forgetPassword))
 router.post("/forget-password/change-password", checkForgetPasswordAuth, catchAsyncError(resetPassword))
-router.get("/get-users", checkAdminAuth, catchAsyncError(getUsers))
+router.get("/get-users", checkAdminAuth, saveLogs, catchAsyncError(getUsers))
 router.get("/get-user-by-role", checkAdminAuth, catchAsyncError(getUsersByRole))
 router.get("/get-user-by-id", checkAdminAuth, catchAsyncError(getUsersById))
-router.get("/get-user-info", checkAuth, catchAsyncError(getUsersInfo))
+router.get("/get-user-info", checkAuth, saveLogs, catchAsyncError(getUsersInfo))
 router.put("/update-user", checkAdminAuth, catchAsyncError(updateUser))
-router.post("/change-password", checkAuth, catchAsyncError(resetUserPassword))
+router.post("/change-password", checkAuth, saveLogs, catchAsyncError(resetUserPassword))
 router.get("/search-user", checkAdminAuth, catchAsyncError(searchUser))
 // router.post("/save-withdrawal-pin", checkAuth, catchAsyncError(addPinWithdrawal))
-router.post("/save-wallet-address", checkAuth, catchAsyncError(saveWalletAddress))
-router.post("/change-withdrawal-pin", checkAuth, catchAsyncError(updatePinWithdrawal))
+router.post("/save-wallet-address", checkAuth, saveLogs, catchAsyncError(saveWalletAddress))
+router.post("/change-withdrawal-pin", checkAuth, saveLogs, catchAsyncError(updatePinWithdrawal))
 // user end
 
 // product begin
@@ -76,10 +77,10 @@ router.get("/get-commission-level", checkSuperAdminAuth, catchAsyncError(getComm
 
 // wallet begin
 router.get("/get-wallet", checkAdminAuth, catchAsyncError(getWalletsByUserId))
-router.get("/get-user-wallet", checkAuth, catchAsyncError(getWalletsByUserIdForUser))
+router.get("/get-user-wallet", checkAuth, saveLogs, catchAsyncError(getWalletsByUserIdForUser))
 router.post("/charge-wallet", checkAdminAuth, catchAsyncError(chargeWallet))
 router.post("/edit-wallet", checkAdminAuth, catchAsyncError(editWalletValue))
-router.post("/withdrawal-wallet", checkAuth, catchAsyncError(withdrawalRequest))
+router.post("/withdrawal-wallet", checkAuth, saveLogs, catchAsyncError(withdrawalRequest))
 router.get("/get-withdrawal-requests", checkSuperAdminAuth, catchAsyncError(getWithdrawalRequests))
 router.post("/answer-withdrawal-requests", checkSuperAdminAuth, catchAsyncError(answerWithdrawalRequest))
 // wallet end
@@ -94,15 +95,15 @@ router.post("/answer-withdrawal-requests", checkSuperAdminAuth, catchAsyncError(
 // Journey : begin
 router.post("/create-journey", checkAdminAuth, catchAsyncError(placeJourney))
 router.post("/edit-journey", checkAdminAuth, catchAsyncError(editJourneys))
-router.get("/get-journey", checkAuth, catchAsyncError(getLastJourneyInof))
-router.post("/place-order", checkAuth, catchAsyncError(placeOrder))
-router.post("/submit-order", checkAuth, catchAsyncError(submitOrder))
+router.get("/get-journey", checkAuth, saveLogs, catchAsyncError(getLastJourneyInof))
+router.post("/place-order", checkAuth, saveLogs, catchAsyncError(placeOrder))
+router.post("/submit-order", checkAuth, saveLogs, catchAsyncError(submitOrder))
 router.put("/cancel-journey", checkAdminAuth, catchAsyncError(cancelJourney))
 router.put("/reset-journey", checkAdminAuth, catchAsyncError(resetJourney))
 router.get("/journeys-history", checkAuth, catchAsyncError(userJourneys))
 router.get("/get-single-journey-history", checkAuth, catchAsyncError(getSingleJourneyHistory))
-router.get("/get-journey-history", checkAuth, catchAsyncError(getJourneyHistory))
-router.get("/user-journeys-history", checkAdminAuth, catchAsyncError(userJourneysByAdmin))
+router.get("/get-journey-history", checkAuth, saveLogs, catchAsyncError(getJourneyHistory))
+router.get("/user-journeys-history", checkAdminAuth, saveLogs, catchAsyncError(userJourneysByAdmin))
 router.get("/get-journey-by-id", checkAdminAuth, catchAsyncError(getJourneyByIdForAdmin))
 // Journey : end
 
@@ -115,7 +116,7 @@ router.get("/get-custom-journeys", checkAdminAuth, catchAsyncError(getCustomJour
 // custom journys: end
 
 // transactions : begin
-router.get("/get-my-transactions", checkAuth, catchAsyncError(getMyTransactions))
+router.get("/get-my-transactions", checkAuth, saveLogs, catchAsyncError(getMyTransactions))
 router.get("/get-transactions", checkAdminAuth, catchAsyncError(getTransaction))
 // transactions : end
 
