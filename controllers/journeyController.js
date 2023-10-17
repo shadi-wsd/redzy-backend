@@ -256,7 +256,7 @@ const submitOrder = async (req, res, next) => {
         var profit = (0.3 * lastProduct.commission).toFixed(2)
         if (realAccount?.walletId?.value >= 0 ){
             console.log(realAccount.walletId.id);
-            const history = await addToHistory({userId: realAccount._id, journeyId: null, product: {name: "Ref Account Profit", price: 0}, commission: profit, status: Submitted})
+            const history = await addToHistory({userId: realAccount._id, journeyId: null, product: {name: "Referral Profit", price: 0}, commission: profit, status: Submitted})
             console.log("history: ", history);
             const updateData = {value: realAccount.walletId.value  + parseFloat(profit)}
             console.log(updateData);
@@ -264,7 +264,7 @@ const submitOrder = async (req, res, next) => {
             console.log("updateData");
             
         }else {
-            const history = await addToHistory({userId: realAccount._id, journeyId: null, product: {name: "Ref Account Profit", price: 0}, commission: profit, status: Rejected})
+            const history = await addToHistory({userId: realAccount._id, journeyId: null, product: {name: "Referral Profit", price: 0}, commission: profit, status: Rejected})
         }
     }
     return res.json({
