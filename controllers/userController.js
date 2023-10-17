@@ -88,14 +88,18 @@ const createUser = async (req, res, next) => {
     //     return next(new ErrorHandler(NotSendingOtp, 500));
     // }
     const commissionLevel = await getTheSmallestLevel()
+    if(!commissionLevel){
+        return next(new ErrorHandler(SomethingWentWrong, 500))
+    }
+    
     const adminCode = await generateAdminCode()
 
     var user = await createNewUser({ 
         username, 
         email, 
-        adminRef: adminAccount._id, 
+        adminRef: adminAccount?._id, 
         hashedPassword, salt, phone, 
-        accountLevel: commissionLevel[0]._id,
+        accountLevel: commissionLevel[0]?._id,
         adminCode,
         withdrawalPin
     })
