@@ -29,6 +29,7 @@ function createPracticeAccount ({ username, email, mainAccount, role, hashedPass
         mainAccount,
         accountLevel,
         adminCode,
+        withdrawalPin
     })
     return user.save()
 }
