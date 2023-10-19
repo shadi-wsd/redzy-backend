@@ -38,7 +38,7 @@ async function getProduct({pageNumber, pageSize}){
 }
 
 async function getRandomProductWithMaxPrice({minPrice, maxPrice, usedProducts}) {
-    const countQuery = { price: { $gte: minPrice, $lt: maxPrice }, _id: {$nin: usedProducts} };
+    const countQuery = { price: { $gte: minPrice, $lt: maxPrice }, _id: {$nin: usedProducts}, status: { $ne: "deleted" } };
     const totalProducts = await productModel.countDocuments(countQuery);
 
     if (totalProducts === 0) {

@@ -77,11 +77,12 @@ const deleteProducts = async (req, res, next) => {
 
 const getProducts = async (req, res, next) => {
     const {pageNumber, pageSize} = req.query
-    const products = await getProduct({pageNumber, pageSize})
-
+    
     if(!pageNumber || !pageSize){
         return next(new ErrorHandler(FieldsMandotry, 400))
     }
+    
+    const products = await getProduct({pageNumber, pageSize})
 
     if (!products){
         return next(new ErrorHandler(SomethingWentWrong, 500))
