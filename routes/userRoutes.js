@@ -124,7 +124,7 @@ router.get("/get-transactions", checkAdminAuth, catchAsyncError(getTransaction))
 // Parameters: end
 router.post("/create-parameter", checkAdminAuth, catchAsyncError(addParameter))
 router.put("/update-parameter", checkAdminAuth, catchAsyncError(updateParameter))
-router.get("/get-parameter-by-id", checkAuth, catchAsyncError(getParametersById))
+router.get("/get-parameter-by-id", checkAdminAuth, catchAsyncError(getParametersById))
 router.get("/get-parameters", checkAuth, catchAsyncError(getParameters))
 router.get("/get-parameter-by-name", checkAuth, catchAsyncError(getParametersByName))
 // Parameters: begin
