@@ -21,7 +21,8 @@ const { UserNotFound,
     CanceledJourney, 
     Submitted, 
     PracticeType, 
-    Rejected 
+    Rejected, 
+    YourJourneyGotCanceled
 } = require("../instance")
 
 const ErrorHandler = require("../utils/errorHandler")
@@ -144,6 +145,10 @@ const placeOrder = async (req, res, next) => {
             commission: lastProduct?.commission,
             couponsReward
         })
+    }
+
+    if (journey[0].status === CanceledJourney ){//if the user has a product give it to him
+        return next(new ErrorHandler(YourJourneyGotCanceled, 500)) 
     }
 
     const wallet = await getWalletByUserId({userId})
