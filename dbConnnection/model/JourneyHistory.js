@@ -18,7 +18,8 @@ const JourneyHistorySchema = new Schema({
         imageUrl: String,
     },
     commission: Number,
-    status: {type: String, default: PendingJourney}
+    status: {type: String, default: PendingJourney},
+    couponsReward: {type: Number, default: null}
 }, { timestamps: true })
 
 

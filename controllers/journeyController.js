@@ -4,7 +4,7 @@ const { createJourney, editJourney, getJourneyByAdmin, getJourneyByIdAndUserId, 
 const { getProductsById, getRandomProductWithMaxPrice } = require("../dbConnnection/repositry.js/product-repo")
 const { getUserById, editUser, getUserByAdminCode, getUserByMainAccount } = require("../dbConnnection/repositry.js/user-repo")
 const { getWalletByUserId, editWallet } = require("../dbConnnection/repositry.js/wallet-repos")
-const { checkBreakPoints, checkCurrentStage } = require("../helpers/journeyChecks")
+const { checkBreakPoints, checkCurrentStage, checkLastBreakPoint } = require("../helpers/journeyChecks")
 const { UserNotFound, 
     orderPointBiggerThanLastStage, 
     FieldsMandotry, 
@@ -131,12 +131,18 @@ const placeOrder = async (req, res, next) => {
         if(!lastProduct){
             return next(new ErrorHandler(SomethingWentWrong, 500)) 
         }
+        var couponsReward = null
+        if(lastProduct?.couponsReward){
+            couponsReward = `Complete to claim ${journey[0]?.couponsReward}$ gift`
+        }
+
 
         return res.json({
             success: true,
             message: "Get product successfully",
             product: lastProduct?.product,
-            commission: lastProduct?.commission
+            commission: lastProduct?.commission,
+            couponsReward
         })
     }
 
@@ -152,9 +158,13 @@ const placeOrder = async (req, res, next) => {
     const user = await getUserById({id:req.userData.user._id})
     var commissionLevel = await getCommissionLevelById({id: user.accountLevel})
     const currentStageFlag = await checkCurrentStage(journey[0].currentStage, journey[0].breakPoints)//check if the user is in the break point
+    
+    
+    var couponsReward = null
     if (currentStageFlag){
         var product = await getProductsById({ids: [currentStageFlag.productId._id.toString()]})
         var commissionVal = journey[0]?.pointsCommission || commissionLevel.commissionValue
+        couponsReward = `Complete to claim ${journey[0]?.couponsReward}$ gift`
     }else{
         if (journey[0]?.productValue){
             var maxPrice = ((wallet.value * journey[0].productValue) / 100).toFixed(2) 
@@ -195,9 +205,13 @@ const placeOrder = async (req, res, next) => {
 
     const productData = {name: product.name, price: product.price, imageUrl: product.imageUrl }
     
+    var couponsRewardGift = null
+    if (await checkLastBreakPoint(journey[0].currentStage, journey[0].breakPoints.slice(-1)[0].point)){
+        couponsRewardGift = journey[0]?.couponsReward
+    }
     
     const commission = (product.price * commissionVal).toFixed(2)
-    const history = await addToHistory({userId, journeyId, product: productData, commission})
+    const history = await addToHistory({userId, journeyId, product: productData, commission, couponsReward: couponsRewardGift})
     
     if (!history){
         return next(new ErrorHandler(SomethingWentWrong, 500))
@@ -207,7 +221,8 @@ const placeOrder = async (req, res, next) => {
         success: true,
         message: "Get product successfully",
         product,
-        commission
+        commission,
+        couponsReward
     })
 
 }
@@ -231,8 +246,14 @@ const submitOrder = async (req, res, next) => {
     if (lastProduct.status !== PendingJourney){
         return next(new ErrorHandler(SomethingWentWrong, 500))
     }
-
-    const updateData = {value: wallet.value + lastProduct.product.price + lastProduct.commission}
+    if (lastProduct?.couponsReward){
+        var couponsRewardGift = `Congrats!! you got your ${lastProduct.couponsReward} gift`
+        var updateData = {value: wallet.value + lastProduct.product.price + lastProduct.commission + lastProduct.couponsReward}
+    }else{
+        console.log("aa");
+        var couponsRewardGift = null
+        var updateData = {value: wallet.value + lastProduct.product.price + lastProduct.commission}
+    }
 
     const newWallet = await editWallet({walletId: wallet._id, updateData})// need to work on the status
 
@@ -270,7 +291,8 @@ const submitOrder = async (req, res, next) => {
     return res.json({
         success: true,
         message,
-        newWallet
+        newWallet,
+        couponsRewardGift
     })
 }
 

@@ -2,13 +2,14 @@ const { default: mongoose } = require("mongoose")
 const { Submitted } = require("../../instance")
 const { journeyHistoryModel } = require("../model/index")
 
-function addToHistory({userId, journeyId, product, commission, status}){
+function addToHistory({userId, journeyId, product, commission, status, couponsReward}){
     const journeyHistory = new journeyHistoryModel({
         userId,
         journeyId,
         product,
         commission,
-        status
+        status,
+        couponsReward,
     })
 
     return journeyHistory.save()

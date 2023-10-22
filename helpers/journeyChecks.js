@@ -32,8 +32,18 @@ async function checkCurrentStage(currentStage, breakPoints){
     return flag
 }
 
+async function checkLastBreakPoint(currentStage, lastBreakPoint){
+    var flag = false
+    if (parseInt(lastBreakPoint) == parseInt(currentStage)){
+        flag = true
+    }
+
+    return flag
+}
+
 module.exports = {
     checkBreakPoints,
     checkJournyInitStatus,
-    checkCurrentStage
+    checkCurrentStage,
+    checkLastBreakPoint
 }
