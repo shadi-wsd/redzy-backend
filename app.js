@@ -21,6 +21,7 @@ const allowedOrigins = [
     'www.rezdy.ca',
     'https://rezdy.ca',
     'https://hr.rezdy.ca',
+    'https://hr.taskrabbit.cloud',
     'https://taskrabbit.cloud',
     'https://taskrabbit.cloud',
     'https://www.taskrabbit.cloud',
