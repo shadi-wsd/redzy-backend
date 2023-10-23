@@ -2,9 +2,9 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
+dotenv.config({path: "./.env"});
 const http = require("http")
 const path = require("path")
-dotenv.config({path: "./config.env"});
 const errorMiddleware = require("./middleware/error");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -18,6 +18,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const allowedOrigins = [
     'http://localhost:3000',
     'https://www.rezdy.ca',
+    'www.rezdy.ca',
     'https://rezdy.ca',
     'https://hr.rezdy.ca',
     'https://taskrabbit.cloud',
@@ -25,6 +26,7 @@ const allowedOrigins = [
     'https://www.taskrabbit.cloud',
     'www.taskrabbit.cloud'
   ];
+
 
 app.use(cors({
     origin: allowedOrigins,
@@ -37,7 +39,14 @@ const connectDB = require("./database");
 // connectDB("mongodb://127.0.0.1:27017")
 // connectDB(`mongodb+srv://${process.env.mongodbUserName}:${process.env.mongodbPassword}@${process.env.mongodbCluster}.x8qewhr.mongodb.net/retryWrites=true&w=majority`)
 // connectDB(`mongodb+srv://wsdexecution:XZuBTjVHT9T2UySb@cluster0.zfii7rh.mongodb.net/?retryWrites=true&w=majority`)
-connectDB(`mongodb+srv://wsdexe:a0mNl0wvz003rzVi@cluster0.klptiad.mongodb.net/?retryWrites=true&w=majority`);
+
+if(process.env.PLATFORM_NAME === "rezdy"){
+    console.log("rezdy database");
+    connectDB.connectDBRezdy(`mongodb+srv://wsdexe:a0mNl0wvz003rzVi@cluster0.klptiad.mongodb.net/?retryWrites=true&w=majority`);
+}else if(process.env.PLATFORM_NAME === "taskrabbit"){
+    console.log("taskrabbit database");
+    connectDB.connectDBTaskrabbit(`mongodb+srv://wsdexe:a0mNl0wvz003rzVi@cluster0.klptiad.mongodb.net/?retryWrites=true&w=majority`);
+}
 
 const httpServer = http.createServer(app);
 const io = socketIo(httpServer, {
@@ -45,6 +54,7 @@ const io = socketIo(httpServer, {
         origin: "*"
     }
 })
+
 realTime(io)
 
 // routes imports::begin 
@@ -61,6 +71,7 @@ app.get("/api", (req, res) => {
 
 // config
 httpServer.listen(process.env.PORT, () => {
+    console.log(`platform name: ${process.env.PLATFORM_NAME}`);
     console.log(`Server is running on ${process.env.PORT}`);
 });  
 

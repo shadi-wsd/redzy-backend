@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const connectDB = (DATABASE_URL) => {
+const connectDBRezdy = (DATABASE_URL) => {
     try {
         const DB_OPTION = {
             dbName: "rezdy"
@@ -12,5 +12,17 @@ const connectDB = (DATABASE_URL) => {
     }
 }
 
+const connectDBTaskrabbit = (DATABASE_URL) => {
+    try {
+        const DB_OPTION = {
+            dbName: "taskrabbit"
+        }
+        mongoose.connect(DATABASE_URL, DB_OPTION);
+        console.log("Database connceted Successfully");
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-module.exports = connectDB;
+
+module.exports = {connectDBRezdy, connectDBTaskrabbit};
