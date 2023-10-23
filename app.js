@@ -20,10 +20,14 @@ const allowedOrigins = [
     'https://www.rezdy.ca',
     'https://rezdy.ca',
     'https://hr.rezdy.ca',
+    'https://taskrabbit.cloud',
+    'https://taskrabbit.cloud',
+    'https://www.taskrabbit.cloud',
+    'www.taskrabbit.cloud'
   ];
 
 app.use(cors({
-    origin: "*",
+    origin: allowedOrigins,
     credentials: true,
     optionsSuccessStatus: 200
 }));
