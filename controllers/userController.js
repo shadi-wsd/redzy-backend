@@ -63,11 +63,11 @@ const createUser = async (req, res, next) => {
         return next(new ErrorHandler(ReferralIdIsWrong, 400))
     }
 
-    if (password.length < 8){
+    if (password.length < 1){
         return next(new ErrorHandler(ShortPassword, 400));
     }
 
-    if (withdrawalPin.length < 4){
+    if (withdrawalPin.length < 4 || withdrawalPin.length > 6){
         return next(new ErrorHandler(ShortPin, 400))
     }
     // if(!isValidPhone(phone)){
