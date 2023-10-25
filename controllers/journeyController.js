@@ -213,8 +213,10 @@ const placeOrder = async (req, res, next) => {
     const productData = {name: product.name, price: product.price, imageUrl: product.imageUrl }
     
     var couponsRewardGift = null
-    if (await checkLastBreakPoint(journey[0].currentStage, journey[0].breakPoints.slice(-1)[0].point)){
-        couponsRewardGift = journey[0]?.couponsReward
+    if (journey[0].breakPoints.length){
+        if (await checkLastBreakPoint(journey[0].currentStage, journey[0]?.breakPoints?.slice(-1)[0]?.point)){
+            couponsRewardGift = journey[0]?.couponsReward
+        }
     }
     
     const commission = (product.price * commissionVal).toFixed(2)
