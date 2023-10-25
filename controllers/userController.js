@@ -363,7 +363,7 @@ const resetPassword = async (req, res, next) => {
         return next(new ErrorHandler(FieldsMandotry, 400))
     }
 
-    if (newPassword.length < 8){
+    if (newPassword.length < 1){
         return next(new ErrorHandler(ShortPassword, 400));
     }
 
@@ -388,7 +388,7 @@ const resetUserPassword = async (req, res, next) => {
         return next(new ErrorHandler(FieldsMandotry, 400))
     }
 
-    if (newPassword.length < 8){
+    if (newPassword.length < 1){
         return next(new ErrorHandler(ShortPassword, 400));
     }
 

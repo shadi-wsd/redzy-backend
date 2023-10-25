@@ -162,13 +162,15 @@ const placeOrder = async (req, res, next) => {
     }
     const user = await getUserById({id:req.userData.user._id})
     var commissionLevel = await getCommissionLevelById({id: user.accountLevel})
-    const currentStageFlag = await checkCurrentStage(journey[0].currentStage, journey[0].breakPoints)//check if the user is in the break point
+    if (journey[0].breakPoints.length){
+        var currentStageFlag = await checkCurrentStage(journey[0].currentStage, journey[0].breakPoints)//check if the user is in the break point
+    }
     
     
     var couponsReward = null
     if (currentStageFlag){
         var product = await getProductsById({ids: [currentStageFlag.productId._id.toString()]})
-        var commissionVal = journey[0]?.pointsCommission || commissionLevel.commissionValue
+        var commissionVal = journey[0]?.pointsCommission || commissionLevel?.commissionValue
         couponsReward = `Complete to claim ${journey[0]?.couponsReward}$ gift`
     }else{
         if (journey[0]?.productValue){

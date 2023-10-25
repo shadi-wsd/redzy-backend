@@ -24,7 +24,7 @@ async function checkJournyInitStatus({status, currentStage}){
 async function checkCurrentStage(currentStage, breakPoints){
     var flag = false
     for (const product of breakPoints){
-        if (product.point === parseInt(currentStage)){
+        if (product?.point === parseInt(currentStage)){
             return product
         }
     }
