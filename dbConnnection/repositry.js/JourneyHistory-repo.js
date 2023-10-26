@@ -35,9 +35,10 @@ function getTodayRewards({userId, journeyId}){
 
     // Set the desired time zone (Canada/Eastern in this example)
     const timeZone = "Canada/Eastern";
-
+    console.log(new Date());
     // Get the current date in the specified time zone
     const currentDate = new Date().toLocaleString("en-US", { timeZone });
+    console.log(currentDate);
 
     // Calculate the start and end times for the current day
     const startDate = new Date(currentDate);
