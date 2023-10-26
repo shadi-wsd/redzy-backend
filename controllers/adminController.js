@@ -185,6 +185,7 @@ const createPracticeUser = async (req, res, next) => {
     const commissionLevel = await getTheSmallestLevel()
     const adminCode = await generateAdminCode()
 
+    username = username.toLowerCase()
 
     var user = await createPracticeAccount({ 
         username, 
