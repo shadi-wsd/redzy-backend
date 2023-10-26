@@ -307,12 +307,12 @@ const submitOrder = async (req, res, next) => {
 
 const getLastJourneyInof = async (req, res, next) => {
     var journey = await getLastJourneyByUserIdForUser({userId: req.userData.user._id})
-    console.log(journey);
+
     if (!journey){
         return next(new ErrorHandler(NoData, 404))
     }
 
-    const todayReward = await getTodayRewards({userId: req.userData.user._id})
+    const todayReward = await getTodayRewards({userId: req.userData.user._id, journeyId: journey._id})
     
     journey = {...journey._doc, todayRewards: todayReward[0]?.todayRewards || 0}
     return res.json({

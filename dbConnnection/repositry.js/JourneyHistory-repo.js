@@ -31,7 +31,7 @@ function editHistory({id, updateData}){
     ).select('-journeyId -userId')
 }
 
-function getTodayRewards({userId}){
+function getTodayRewards({userId, journeyId}){
     // Get the current date
     const currentDate = new Date();
 
@@ -50,7 +50,8 @@ function getTodayRewards({userId}){
                   $lte: endDate,
                 },
                 status: Submitted, // Filter by the 'submitted' status
-                userId: new mongoose.Types.ObjectId(userId)
+                userId: new mongoose.Types.ObjectId(userId),
+                journeyId: new mongoose.Types.ObjectId(journeyId)
             },
         },
         {
