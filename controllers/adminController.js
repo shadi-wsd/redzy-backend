@@ -166,7 +166,7 @@ const createPracticeUser = async (req, res, next) => {
     const userAccount = await getAdminByCode({adminCode: mainAccount})
     console.log(mainAccount);
     
-    if (!userAccount || userAccount.role !== User){
+    if (!userAccount || userAccount.role === Admin){
         return next(new ErrorHandler(UserIdIsWrong, 400))
     }
 
@@ -205,8 +205,8 @@ const createPracticeUser = async (req, res, next) => {
     
     if (user.role === PracticeType){
         const wallet = await createWallet({clientId: user._id, value: walletValue || 0, type: PracticeType})
-        const journey = await createJourney({userId: user._id, breakPoints: [], maxStagesNumber: 40})
-        const walletUser = await editUser({userId: user._id, updateData: {walletId: wallet._id, currentJourney: journey._id}})
+        // const journey = await createJourney({userId: user._id, breakPoints: [], maxStagesNumber: 40})
+        const walletUser = await editUser({userId: user._id, updateData: {walletId: wallet._id}})
     }
 
     return res.status(201).json({

@@ -69,4 +69,13 @@ const getParameters = async ( req, res, next) => {
     })
 }
 
-module.exports = { addParameter, updateParameter, getParametersById, getParametersByName, getParameters }
+const getParametersByAdmin = async ( req, res, next) => {
+    const parameter = await getParameter()
+    return res.status(200).json({
+        success: true,
+        meesage: "got parameter successfully",
+        parameter
+    })
+}
+
+module.exports = { addParameter, updateParameter, getParametersById, getParametersByName, getParameters, getParametersByAdmin }

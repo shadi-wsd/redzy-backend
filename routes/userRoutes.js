@@ -14,7 +14,7 @@ const Journey = require("../dbConnnection/model/Journey");
 const { placeJourney, editJourneys, placeOrder, submitOrder, getLastJourneyInof, cancelJourney, userJourneys, getJourneyHistory, userJourneysByAdmin, getJourneyByIdForAdmin, resetJourney, getSingleJourneyHistory } = require("../controllers/journeyController");
 const { getMyTransactions, getTransaction } = require("../controllers/transactionsController");
 const { createCustomJourneys, editCustomJourneys, getCustomJourney, getCustomJourneys } = require("../controllers/customJourneyController");
-const { addParameter, updateParameter, getParametersById, getParameters, getParametersByName } = require("../controllers/parametersController");
+const { addParameter, updateParameter, getParametersById, getParameters, getParametersByName, getParametersByAdmin } = require("../controllers/parametersController");
 const { saveLogs } = require("../middleware/logs");
 const router = express.Router();
 router.use(bodyParser.json())
@@ -125,6 +125,7 @@ router.get("/get-transactions", checkAdminAuth, catchAsyncError(getTransaction))
 router.post("/create-parameter", checkAdminAuth, catchAsyncError(addParameter))
 router.put("/update-parameter", checkAdminAuth, catchAsyncError(updateParameter))
 router.get("/get-parameter-by-id", checkAdminAuth, catchAsyncError(getParametersById))
+router.get("/get-parameters-by-admin", checkAdminAuth, catchAsyncError(getParametersByAdmin))
 router.get("/get-parameters", checkAuth, catchAsyncError(getParameters))
 router.get("/get-parameter-by-name", checkAuth, catchAsyncError(getParametersByName))
 // Parameters: begin
