@@ -32,8 +32,12 @@ function editHistory({id, updateData}){
 }
 
 function getTodayRewards({userId, journeyId}){
-    // Get the current date
-    const currentDate = new Date();
+
+    // Set the desired time zone (Canada/Eastern in this example)
+    const timeZone = "Canada/Eastern";
+
+    // Get the current date in the specified time zone
+    const currentDate = new Date().toLocaleString("en-US", { timeZone });
 
     // Calculate the start and end times for the current day
     const startDate = new Date(currentDate);
