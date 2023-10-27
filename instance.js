@@ -71,7 +71,7 @@ module.exports.Bronze = "Bronze"
 // account levels end
 
 // wallet :begin
-module.exports.Charge = "Charging"
+module.exports.Charge = "Debit"
 module.exports.WithdrawalByAdmin = "Withdrawal-By-Admin"
 module.exports.Withdrawal = "Withdrawal"
 module.exports.PracticeType = "Practice"
