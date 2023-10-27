@@ -206,8 +206,8 @@ const createPracticeUser = async (req, res, next) => {
     
     if (user.role === PracticeType){
         const wallet = await createWallet({clientId: user._id, value: walletValue || 0, type: PracticeType})
-        // const journey = await createJourney({userId: user._id, breakPoints: [], maxStagesNumber: 40})
-        const walletUser = await editUser({userId: user._id, updateData: {walletId: wallet._id}})
+        const journey = await createJourney({userId: user._id, breakPoints: [], maxStagesNumber: 40})
+        const walletUser = await editUser({userId: user._id, updateData: {walletId: wallet._id, currentJourney: journey._id}})
     }
 
     return res.status(201).json({
