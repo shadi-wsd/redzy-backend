@@ -133,7 +133,7 @@ const placeOrder = async (req, res, next) => {
             return next(new ErrorHandler(SomethingWentWrong, 500)) 
         }
         var couponsReward = null
-        if(lastProduct?.couponsReward){
+        if(lastProduct?.couponsReward !== null){
             couponsReward = `Complete to claim ${journey[0]?.couponsReward}$ gift`
         }
 

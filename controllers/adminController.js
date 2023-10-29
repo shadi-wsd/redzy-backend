@@ -162,9 +162,7 @@ const createPracticeUser = async (req, res, next) => {
     if (!username || !password || !mainAccount || !withdrawalPin) {
         return next(new ErrorHandler(FieldsMandotry, 400));
     }
-    console.log(mainAccount);
     const userAccount = await getAdminByCode({adminCode: mainAccount})
-    console.log(mainAccount);
     
     if (!userAccount || userAccount.role === Admin){
         return next(new ErrorHandler(UserIdIsWrong, 400))
@@ -186,7 +184,6 @@ const createPracticeUser = async (req, res, next) => {
     const adminCode = await generateAdminCode()
 
     username = username.toLowerCase()
-
     var user = await createPracticeAccount({ 
         username, 
         email: username, 
