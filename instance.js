@@ -105,3 +105,6 @@ module.exports.Blocked = "Blocked"
 module.exports.Active = "Active"
 module.exports.BlockedAccount = "Your account has been blocked. Please contact support for assistance."
 // account status 
+
+// far date
+module.exports.farFutureDate = new Date('2030-12-31T23:59:59');

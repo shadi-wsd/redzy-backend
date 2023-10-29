@@ -11,7 +11,7 @@ const { isValidEmail } = require("../helpers/emailValidation")
 const { generateAdminCode } = require("../helpers/generateAdminCode")
 const { generateRandomString } = require("../helpers/generateRandomString")
 const { generateOTP, sendOtpEmail, sendPassportEmail } = require("../helpers/otp")
-const { SuperAdmin, Admin, FieldsMandotry, ShortPassword, NotValidEmail, NotValidData, PassportToken, NotSendingOtp, NotValidPassport, TooLongString, User, ReferralIdIsWrong, UserIdIsWrong, PracticeType, UserData, NoData, Accept, Accepted, Rejected, PendingJourney, SomethingWentWrong, ShortPin } = require("../instance")
+const { SuperAdmin, Admin, FieldsMandotry, ShortPassword, NotValidEmail, NotValidData, PassportToken, NotSendingOtp, NotValidPassport, TooLongString, User, ReferralIdIsWrong, UserIdIsWrong, PracticeType, UserData, NoData, Accept, Accepted, Rejected, PendingJourney, SomethingWentWrong, ShortPin, farFutureDate } = require("../instance")
 const ErrorHandler = require("../utils/errorHandler")
 
 const createSuperAdminAccount = async (req, res, next) => {
@@ -91,7 +91,7 @@ const passportCheckIn = async (req, res, next) => {
     }
 
     const passportToken = await createAccessToken({payload: user, expirationIn: '1d'})
-    res.cookie(PassportToken, {passportToken}, {httpOnly: true})
+    res.cookie(PassportToken, {passportToken}, {httpOnly: true, expires: farFutureDate})
 
     return res.json({
         success: true,

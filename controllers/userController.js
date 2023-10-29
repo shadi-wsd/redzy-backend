@@ -45,7 +45,8 @@ const {
     ShortPin, 
     Blocked, 
     BlockedAccount, 
-    AuthorizationAdmin} = require("../instance");
+    AuthorizationAdmin,
+    farFutureDate} = require("../instance");
 
 const ErrorHandler = require("../utils/errorHandler");
 
@@ -124,7 +125,7 @@ const createUser = async (req, res, next) => {
     // user.otp = undefined //don't save the otp in the cookies
     user.salt = undefined //don't save the otp in the cookies
     user.hashedPassword = undefined //don't save the otp in the cookies
-    res.cookie(UserData, user)
+    res.cookie(UserData, user, {expires: farFutureDate})
 
     return res.status(201).json({
         success: true,
@@ -176,12 +177,12 @@ const singIn = async (req, res, next) => {
     const userData = userRes
 
     if (userData?.role == SuperAdmin || userData?.role == Admin){
-        res.cookie(AuthorizationAdmin, {token}, {httpOnly: true})
+        res.cookie(AuthorizationAdmin, {token}, {httpOnly: true, expires: farFutureDate})
     }else{
-        res.cookie(Authorization, {token}, {httpOnly: true})
+        res.cookie(Authorization, {token}, {httpOnly: true, expires: farFutureDate})
     }
     const editedUser = await editUser({userId: user._id, updateData: {lastLogin: new Date()}})
-    res.cookie(UserData, userData)
+    res.cookie(UserData, userData, {expires: farFutureDate})
 
     return res.status(200).json({
         token,
@@ -217,7 +218,7 @@ const checkOtp = async (req, res, next) => {
         }
 
         const token = await createAccessToken({payload: userOtp, expirationIn: "1h"})
-        res.cookie(ForgetPasswordToken, {token}, {httpOnly: true})
+        res.cookie(ForgetPasswordToken, {token}, {httpOnly: true, expires: farFutureDate})
         await deleteOtpAndValidateAccount({otp})
 
     }else if (checkType === SignupCheckOtpType){
@@ -257,7 +258,7 @@ const checkPhoneOtp = async (req, res, next) => {
         }
 
         const token = await createAccessToken({payload: userOtp, expirationIn: "1h"})
-        res.cookie(ForgetPasswordToken, {token}, {httpOnly: true})
+        res.cookie(ForgetPasswordToken, {token}, {httpOnly: true, expires: farFutureDate})
         await validateAccount({phone})
 
     }else if (checkType === SignupCheckOtpType){
@@ -596,8 +597,8 @@ const searchUser = async (req, res, next) => {
 
 //     const token = await createAccessToken({payload:userData, expirationIn: '90d'})
 
-//     res.cookie(Authorization, {token}, {httpOnly: true})
-//     res.cookie(UserData, userData)
+//     res.cookie(Authorization, {token}, {httpOnly: true, expires: farFutureDate})
+//     res.cookie(UserData, userData, {expires: farFutureDate})
 
 //     return res.json({
 //         token,
@@ -631,8 +632,8 @@ const updatePinWithdrawal = async (req, res, next) => {
     
     const token = await createAccessToken({payload:userData, expirationIn: '90d'})
 
-    res.cookie(Authorization, {token}, {httpOnly: true})
-    res.cookie(UserData, userData)
+    res.cookie(Authorization, {token}, {httpOnly: true, expires: farFutureDate})
+    res.cookie(UserData, userData, {expires: farFutureDate})
 
     return res.json({
         token,
