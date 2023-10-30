@@ -540,7 +540,7 @@ const getUsersInfo = async (req, res, next) => {
 }
 
 const updateUser = async (req, res, next) => {
-    const {userId, status, accountLevel, accountStatus, newPassword, withdrawalPin, walletAddress} = req.body
+    const {userId, status, accountLevel, accountStatus, newPassword, withdrawalPin, walletAddress, creditLifes} = req.body
     
     if (!userId) {
         return next(new ErrorHandler(FieldsMandotry, 400))
@@ -559,9 +559,9 @@ const updateUser = async (req, res, next) => {
     }
 
     if(newPassword){
-        var updateData = { status, accountLevel, accountStatus, withdrawalPin, walletAddress, hashedPassword, salt}
+        var updateData = { status, accountLevel, accountStatus, withdrawalPin, walletAddress, creditLifes, hashedPassword, salt}
     }else{
-        var updateData = { status, accountLevel, accountStatus, withdrawalPin, walletAddress}
+        var updateData = { status, accountLevel, accountStatus, withdrawalPin, walletAddress, creditLifes}
     }
     const editedUser = await editUser({userId, updateData})
 

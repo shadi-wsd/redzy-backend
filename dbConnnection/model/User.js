@@ -54,7 +54,8 @@ const UserSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Journey'
     },
-    lastLogin: {type: Date, default: null}
+    lastLogin: {type: Date, default: null},
+    creditLifes: {type: Number, default: 6}
     
 }, { timestamps: true })
 
