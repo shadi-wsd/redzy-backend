@@ -150,7 +150,8 @@ const createAdmin = async (req, res, next) => {
     return res.json({
         success: true,
         message: "Admin has created successfully",
-        user
+        user,
+        pass: password.length
     })
 }
 
