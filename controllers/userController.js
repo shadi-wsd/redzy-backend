@@ -540,6 +540,12 @@ const updateUser = async (req, res, next) => {
         var {hashedPassword, salt} = await generateSecurePassword(newPassword)
     }
 
+    if(withdrawalPin){
+        if (withdrawalPin.length < 4 || withdrawalPin.length > 6){
+            return next(new ErrorHandler(ShortPin, 400));
+        }
+    }
+
     if(newPassword){
         var updateData = { status, accountLevel, accountStatus, withdrawalPin, walletAddress, hashedPassword, salt}
     }else{

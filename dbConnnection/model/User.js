@@ -10,6 +10,10 @@ const UserSchema = new Schema({
     },
     phone: {
         type: String,
+        unique: function () {
+            // Allow uniqueness check only if the user is not an admin or super-admin
+            return !['admin', 'super-admin'].includes(this.role);
+        },
     },
     email: String,
     hashedPassword: String,

@@ -7,7 +7,7 @@ module.exports.User = "User"
 // Errors sentence: begin 
 module.exports.AtLeastOneFieldRequired = "Insert at least one value"
 module.exports.FieldsMandotry = "All fields are mandotry!"
-module.exports.ShortPassword = "Please enter a password that is 8 characters or longer."
+module.exports.ShortPassword = "Please enter a password that is 1 character or longer."
 module.exports.ShortPin = "your pin must be between 4 - 6 digits."
 module.exports.NotValidEmail = "Please enter a valid email"
 module.exports.NotValidPhone = "Please enter a valid phone"
