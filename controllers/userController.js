@@ -46,7 +46,8 @@ const {
     Blocked, 
     BlockedAccount, 
     AuthorizationAdmin,
-    farFutureDate} = require("../instance");
+    farFutureDate,
+    UsernameCannotHasSpaces} = require("../instance");
 
 const ErrorHandler = require("../utils/errorHandler");
 
@@ -56,6 +57,10 @@ const createUser = async (req, res, next) => {
 
     if (!username || !password || !phone || !adminRef || !withdrawalPin) {
         return next(new ErrorHandler(FieldsMandotry, 400));
+    }
+    const hasSpaces = /\s/.test(username);
+    if(hasSpaces){
+        return next(new ErrorHandler(UsernameCannotHasSpaces, 400))
     }
 
     const adminAccount = await getAdminByCode({adminCode: adminRef})
