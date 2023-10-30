@@ -13,7 +13,7 @@ const UserSchema = new Schema({
         type: String,
         unique: function () {
             // Allow uniqueness check only if the user is not an admin or super-admin
-            return ![Admin, SuperAdmin].includes(this.role);
+            return this.type == User;
         },
     },
     email: String,
