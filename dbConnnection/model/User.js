@@ -8,6 +8,7 @@ const UserSchema = new Schema({
         type: String,
         unique: true
     },
+    role: { type: String, default: User },
     phone: {
         type: String,
         unique: function () {
@@ -18,7 +19,6 @@ const UserSchema = new Schema({
     email: String,
     hashedPassword: String,
     salt: String,
-    role: { type: String, default: User },
     status: { type: String, default: InValid },//notValid | valid | blocked
     accountStatus: { type: String, default: Active },//Active | blocked
     
