@@ -47,7 +47,8 @@ const {
     BlockedAccount, 
     AuthorizationAdmin,
     farFutureDate,
-    UsernameCannotHasSpaces} = require("../instance");
+    UsernameCannotHasSpaces,
+    usedPhone} = require("../instance");
 
 const ErrorHandler = require("../utils/errorHandler");
 
@@ -75,6 +76,12 @@ const createUser = async (req, res, next) => {
 
     if (withdrawalPin.length < 4 || withdrawalPin.length > 6){
         return next(new ErrorHandler(ShortPin, 400))
+    }
+
+    const isPhoneExist = await getUserByphone({phone})
+
+    if(isPhoneExist){
+        return next(new ErrorHandler(usedPhone, 400));
     }
     // if(!isValidPhone(phone)){
     //     return next(new ErrorHandler(NotValidPhone, 400));

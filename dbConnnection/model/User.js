@@ -11,12 +11,6 @@ const UserSchema = new Schema({
     role: { type: String, default: User },
     phone: {
         type: String,
-        unique: function () {
-            if (this.phone === null) {
-                return false; // Allow multiple users with null phone numbers
-            }
-            return true; // Enforce uniqueness for non-null phone numbers
-        }
     },
     email: String,
     hashedPassword: String,
