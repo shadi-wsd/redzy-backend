@@ -534,7 +534,7 @@ const updateUser = async (req, res, next) => {
         return next(new ErrorHandler(FieldsMandotry, 400))
     }
     if(newPassword){
-        if (newPassword.length < 8){
+        if (newPassword.length < 1){
             return next(new ErrorHandler(ShortPassword, 400));
         }
         var {hashedPassword, salt} = await generateSecurePassword(newPassword)
