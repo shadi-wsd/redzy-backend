@@ -105,7 +105,7 @@ const createAdmin = async (req, res, next) => {
         return next(new ErrorHandler(FieldsMandotry, 400));
     }
 
-    if (password.length < 8){
+    if (password.length < 1){
         return next(new ErrorHandler(ShortPassword, 400));
     }
      
