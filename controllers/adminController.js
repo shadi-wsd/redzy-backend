@@ -105,9 +105,9 @@ const createAdmin = async (req, res, next) => {
         return next(new ErrorHandler(FieldsMandotry, 400));
     }
 
-    if (password.length < 1){
-        return next(new ErrorHandler(ShortPassword, 400));
-    }
+    // if (password.length < 1){
+    //     return next(new ErrorHandler(ShortPassword, 400));
+    // }
      
     // const email = req.userData.user.email //super admin account
 
