@@ -12,9 +12,11 @@ const UserSchema = new Schema({
     phone: {
         type: String,
         unique: function () {
-            // Allow uniqueness check only if the user is not an admin or super-admin
-            return this.role == User;
-        },
+            if (this.phone === null) {
+                return false; // Allow multiple users with null phone numbers
+            }
+            return true; // Enforce uniqueness for non-null phone numbers
+        }
     },
     email: String,
     hashedPassword: String,
