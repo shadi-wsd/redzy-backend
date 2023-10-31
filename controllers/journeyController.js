@@ -2,7 +2,7 @@ const { addToHistory, getLastProduct, editHistory, getTodayRewards, getJourneysH
 const { getCommissionLevelById } = require("../dbConnnection/repositry.js/commission-repo")
 const { createJourney, editJourney, getJourneyByAdmin, getJourneyByIdAndUserId, getLastJourneyByUserId, getLastJourneyByUserIdForUser, getJourneysByUserIdForUser, getJourneysByUserIdForAdmin, getJourneyById } = require("../dbConnnection/repositry.js/journey-repo")
 const { getProductsById, getRandomProductWithMaxPrice } = require("../dbConnnection/repositry.js/product-repo")
-const { getUserById, editUser, getUserByAdminCode, getUserByMainAccount } = require("../dbConnnection/repositry.js/user-repo")
+const { getUserById, editUser, getUserByAdminCode, getUserByMainAccount, getUserCredit } = require("../dbConnnection/repositry.js/user-repo")
 const { getWalletByUserId, editWallet } = require("../dbConnnection/repositry.js/wallet-repos")
 const { checkBreakPoints, checkCurrentStage, checkLastBreakPoint } = require("../helpers/journeyChecks")
 const { UserNotFound, 
@@ -313,12 +313,14 @@ const getLastJourneyInof = async (req, res, next) => {
     }
 
     const todayReward = await getTodayRewards({userId: req.userData.user._id, journeyId: journey._id})
+    const credits = await getUserCredit({id: req.userData.user._id})
     
     journey = {...journey._doc, todayRewards: todayReward[0]?.todayRewards || 0}
     return res.json({
         success: true,
         message: "Got the journey successfully",
         journey,
+        credits
     })
 }
 

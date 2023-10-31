@@ -183,6 +183,11 @@ async function getUserByMainAccount({mainAccount}){
     .select('-otp -salt -hashedPassword -hashedPassport')
 }
 
+function getUserCredit({id}){
+    return userModel.findById(id)
+    .select('creditLifes')
+}
+
 module.exports = {
     createNewUser, 
     getUser, 
@@ -202,5 +207,6 @@ module.exports = {
     getAdminByCode,
     searchUsers,
     getUserInfo,
-    getUserByMainAccount
+    getUserByMainAccount,
+    getUserCredit
 }
