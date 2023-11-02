@@ -23,9 +23,12 @@ const allowedOrigins = [
     'https://hr.rezdy.ca',
     'https://hr.taskrabbit.cloud',
     'https://taskrabbit.cloud',
-    'https://taskrabbit.cloud',
     'https://www.taskrabbit.cloud',
-    'www.taskrabbit.cloud'
+    'www.taskrabbit.cloud',
+    'https://moguplatform.ca',
+    'https://www.moguplatform.ca',
+    'https://hr.moguplatform.ca',
+    'www.moguplatform.ca',
   ];
 
 
