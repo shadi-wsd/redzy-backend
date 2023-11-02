@@ -47,6 +47,12 @@ if(process.env.PLATFORM_NAME === "rezdy"){
 }else if(process.env.PLATFORM_NAME === "taskrabbit"){
     console.log("taskrabbit database");
     connectDB.connectDBTaskrabbit(`mongodb+srv://wsdexe:a0mNl0wvz003rzVi@cluster0.klptiad.mongodb.net/?retryWrites=true&w=majority`);
+}else if(process.env.PLATFORM_NAME === "thumbtack"){
+    console.log("thumbtack database");
+    connectDB.connectDBThumbtack(`mongodb+srv://wsdexe:a0mNl0wvz003rzVi@cluster0.klptiad.mongodb.net/?retryWrites=true&w=majority`)
+}else if(process.env.PLATFORM_NAME === "mogu"){
+    console.log("thumbtack database");
+    connectDB.connectDBMogu(`mongodb+srv://wsdexe:a0mNl0wvz003rzVi@cluster0.klptiad.mongodb.net/?retryWrites=true&w=majority`)
 }
 
 const httpServer = http.createServer(app);
