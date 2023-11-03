@@ -62,7 +62,7 @@ function checkUserPassword({ username, hashedPassword }) {
                 ]
             }
         ]
-    }, {otp: 0, salt: 0, hashedPassword: 0, hashedPassport: 0})
+    }, {otp: 0, hashedPassword: 0, hashedPassport: 0})
     .populate('accountLevel', 'level')
     .populate('walletId', 'value')
 

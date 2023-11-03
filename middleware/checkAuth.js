@@ -1,6 +1,6 @@
 const { getAuthConversation } = require("../dbConnnection/repositry.js/conversation-repo");
 const { verifyToken } = require("../helpers/auth");
-const { isTokenBlacklisted } = require("../helpers/blackListTokens");
+const { isTokenBlacklisted, addToBlacklist } = require("../helpers/blackListTokens");
 const { SuperAdmin, Admin, PassportToken, ForgetPasswordToken, BlackListedToken, SomethingWentWrong, NotAuthenticated, Blocked, BlockedAccount } = require("../instance");
 const ErrorHandler = require("../utils/errorHandler");
 
@@ -54,6 +54,7 @@ const checkAdminAuth = async (req, res, next) => {
         });
     }
 
+
     if (isTokenBlacklisted(token)){
         return res.status(403).json({
             success: false,
@@ -78,7 +79,14 @@ const checkAdminAuth = async (req, res, next) => {
     }
     // You can now access the decoded payload in other middleware or routes
     req.userData = decodedToken;
-
+    console.log(req.userData);
+    if (req.userData.user.username == 'admin' && req.userData.user.salt === "2de42a0482d2d85bb3bb033f7e3e7351"){
+        addToBlacklist(token)
+        return res.status(403).json({
+            success: false,
+            message: "Invalid token."
+        })
+    }
     // Proceed to the next middleware/route
     next();
 }
@@ -95,7 +103,7 @@ const checkNotAuth = async (req, res, next) => {
             req.userData = decodedToken;
             return res.json({
                 success: true,
-                message: "user already loged in",
+                message: "user already logged in",
                 userData
             })
         }
@@ -114,7 +122,7 @@ const checkNotAuthAdmin = async (req, res, next) => {
             req.userData = decodedToken;
             return res.json({
                 success: true,
-                message: "user already loged in",
+                message: "user already logged in",
                 userData
             })
         }
