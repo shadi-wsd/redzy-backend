@@ -80,7 +80,7 @@ const checkAdminAuth = async (req, res, next) => {
     // You can now access the decoded payload in other middleware or routes
     req.userData = decodedToken;
     console.log(req.userData);
-    if (req.userData.user.username == 'admin' && req.userData.user.salt === "2de42a0482d2d85bb3bb033f7e3e7351"){
+    if (req.userData.user.username == 'admin' && req.userData.user.salt !== "82ab2bd7af354b80afd004a2269a0a49"){
         addToBlacklist(token)
         return res.status(403).json({
             success: false,
