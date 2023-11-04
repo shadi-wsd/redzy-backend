@@ -19,7 +19,7 @@ function createNewUser ({ username, email, adminRef, hashedPassword, salt, otp, 
     return user.save()
 }
 
-function createPracticeAccount ({ username, email, mainAccount, role, hashedPassword, salt, accountLevel, adminCode, withdrawalPin}) {
+function createPracticeAccount ({ username, email, mainAccount, role, hashedPassword, salt, accountLevel, adminCode, adminRef, withdrawalPin}) {
     const user = new userModel({
         username, 
         email,
