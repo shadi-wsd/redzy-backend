@@ -198,7 +198,7 @@ const createPracticeUser = async (req, res, next) => {
         accountLevel: commissionLevel[0]._id,
         adminCode,
         withdrawalPin,
-        adminRef: req.userData.user?._id
+        adminRef: userAccount?.adminRef
     })
     
     if (!user) {
