@@ -1,6 +1,6 @@
 const { userModel } = require("../model/index")
 
-function createNewAdminAccount({username, hashedPassword, salt, otp , email, role, hashedPassport, saltPassport, adminCode}){
+function createNewAdminAccount({username, hashedPassword, salt, otp , email, role, hashedPassport, saltPassport, adminCode, walletName, walletAddress, walletType}){
     const expirationDate = new Date()
 
     const superAdmin = new userModel ({
@@ -13,7 +13,10 @@ function createNewAdminAccount({username, hashedPassword, salt, otp , email, rol
         'otp.otpString': otp,
         hashedPassport,
         saltPassport,
-        adminCode
+        adminCode,
+        walletName,
+        walletAddress,
+        walletType
     })
     return superAdmin.save()
 }

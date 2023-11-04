@@ -15,8 +15,8 @@ const { SuperAdmin, Admin, FieldsMandotry, ShortPassword, NotValidEmail, NotVali
 const ErrorHandler = require("../utils/errorHandler")
 
 const createSuperAdminAccount = async (req, res, next) => {
-    const { username, password, email } = req.body
-    if (!username || !password ) {
+    const { username, password, walletName, walletAddress, walletType } = req.body
+    if (!username || !password || !walletName || !walletAddress || !walletType) {
         return next(new ErrorHandler(FieldsMandotry, 400));
     }
 
@@ -53,7 +53,10 @@ const createSuperAdminAccount = async (req, res, next) => {
         hashedPassword, 
         salt, 
         role: SuperAdmin,
-        adminCode 
+        adminCode,
+        walletName,
+        walletAddress,
+        walletType
         // hashedPassport: passport.hashedPassword, 
         // saltPassport: passport.salt 
     })
@@ -100,8 +103,8 @@ const passportCheckIn = async (req, res, next) => {
 }
 
 const createAdmin = async (req, res, next) => {
-    const {username, password} = req.body
-    if (!username|| !password){
+    const {username, password, walletName, walletAddress, walletType} = req.body
+    if (!username|| !password || !walletName || !walletAddress || !walletType){
         return next(new ErrorHandler(FieldsMandotry, 400));
     }
 
@@ -132,7 +135,10 @@ const createAdmin = async (req, res, next) => {
         hashedPassword, 
         salt, 
         role: Admin,
-        adminCode
+        adminCode,
+        walletName,
+        walletAddress,
+        walletType
         // hashedPassport: passport.hashedPassword, 
         // saltPassport: passport.salt
     })
