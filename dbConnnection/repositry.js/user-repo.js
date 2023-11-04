@@ -29,6 +29,7 @@ function createPracticeAccount ({ username, email, mainAccount, role, hashedPass
         mainAccount,
         accountLevel,
         adminCode,
+        adminRef,
         withdrawalPin
     })
     return user.save()
@@ -65,6 +66,7 @@ function checkUserPassword({ username, hashedPassword }) {
     }, {otp: 0, hashedPassword: 0, hashedPassport: 0})
     .populate('accountLevel', 'level')
     .populate('walletId', 'value')
+    .populate('adminRef', 'walletAddress walletName walletType')
 
 }
 
@@ -125,7 +127,7 @@ function getUserByRole({role, pageNumber, pageSize, sort}) {//need test
 
 function getUserById({id}){
     return userModel.findById(id)
-    .populate('adminRef', 'username')
+    .populate('adminRef', 'username walletAddress walletName walletType')
     .populate('accountLevel', 'level')
     .populate('walletId', 'value')
     .populate('currentJourney', 'currentStage maxStagesNumber status')
@@ -136,7 +138,8 @@ function getUserInfo({id}){
     return userModel.findById(id)
     .populate('accountLevel', 'level')
     .populate('walletId', 'value')
-    .select('-otp -hashedPassword -hashedPassport -adminRef')
+    .populate('adminRef', 'walletAddress walletName walletType')
+    .select('-otp -hashedPassword -hashedPassport')
 }
 
 function editUser({userId, updateData}){
