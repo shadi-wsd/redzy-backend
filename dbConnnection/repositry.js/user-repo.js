@@ -186,6 +186,14 @@ async function getUserByMainAccount({mainAccount}){
     .select('-otp -salt -hashedPassword -hashedPassport')
 }
 
+
+function getAllDoneAndCanceledJourneys(){
+    return userModel.find({
+        'currentJourney': { $exists: true }
+    })
+    .select('currentJourney -_id')
+}
+
 function getUserCredit({id}){
     return userModel.findById(id)
     .select('creditLifes')
@@ -211,5 +219,6 @@ module.exports = {
     searchUsers,
     getUserInfo,
     getUserByMainAccount,
-    getUserCredit
+    getUserCredit,
+    getAllDoneAndCanceledJourneys
 }

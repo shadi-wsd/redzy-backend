@@ -86,6 +86,16 @@ function getJourneysByUserIdForAdmin({userId}){
     .sort({ createdAt: -1 })
 }
 
+function getCompletedAndCanceledJourney({ids}){
+    return journeyModel.find({
+        _id: { $in: ids },
+        $or: [
+            {status: DoneJourney},
+            {status: CanceledJourney}
+        ]
+      });
+}
+
 module.exports = {
     createJourney,
     editJourney,
@@ -95,5 +105,6 @@ module.exports = {
     getLastJourneyByUserId,
     getLastJourneyByUserIdForUser,
     getJourneysByUserIdForUser,
-    getJourneysByUserIdForAdmin
+    getJourneysByUserIdForAdmin,
+    getCompletedAndCanceledJourney
 }

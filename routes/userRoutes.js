@@ -11,7 +11,7 @@ const { chargeWallet, getWalletsById, getWalletsByUserId, editWalletValue, withd
 // const { getConversations, getAdminConversations, getUserConversations, getClientChat } = require("../controllers/chatController");
 const { upload } = require("../helpers/multer");
 const Journey = require("../dbConnnection/model/Journey");
-const { placeJourney, editJourneys, placeOrder, submitOrder, getLastJourneyInof, cancelJourney, userJourneys, getJourneyHistory, userJourneysByAdmin, getJourneyByIdForAdmin, resetJourney, getSingleJourneyHistory } = require("../controllers/journeyController");
+const { placeJourney, editJourneys, placeOrder, submitOrder, getLastJourneyInof, cancelJourney, userJourneys, getJourneyHistory, userJourneysByAdmin, getJourneyByIdForAdmin, resetJourney, getSingleJourneyHistory, resetAllCompletedJourneys } = require("../controllers/journeyController");
 const { getMyTransactions, getTransaction } = require("../controllers/transactionsController");
 const { createCustomJourneys, editCustomJourneys, getCustomJourney, getCustomJourneys } = require("../controllers/customJourneyController");
 const { addParameter, updateParameter, getParametersById, getParameters, getParametersByName, getParametersByAdmin } = require("../controllers/parametersController");
@@ -105,6 +105,8 @@ router.get("/get-single-journey-history", checkAuth, catchAsyncError(getSingleJo
 router.get("/get-journey-history", checkAuth, saveLogs, catchAsyncError(getJourneyHistory))
 router.get("/user-journeys-history", checkAdminAuth, saveLogs, catchAsyncError(userJourneysByAdmin))
 router.get("/get-journey-by-id", checkAdminAuth, catchAsyncError(getJourneyByIdForAdmin))
+router.get("/reset-all-journeys", checkAdminAuth, catchAsyncError(resetAllCompletedJourneys))
+
 // Journey : end
 
 // custom journys: begin

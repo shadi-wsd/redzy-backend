@@ -1,8 +1,8 @@
 const { addToHistory, getLastProduct, editHistory, getTodayRewards, getJourneysHistoryByUser, getJourneysHistoryByuserIdForUser } = require("../dbConnnection/repositry.js/JourneyHistory-repo")
 const { getCommissionLevelById } = require("../dbConnnection/repositry.js/commission-repo")
-const { createJourney, editJourney, getJourneyByAdmin, getJourneyByIdAndUserId, getLastJourneyByUserId, getLastJourneyByUserIdForUser, getJourneysByUserIdForUser, getJourneysByUserIdForAdmin, getJourneyById } = require("../dbConnnection/repositry.js/journey-repo")
+const { createJourney, editJourney, getJourneyByAdmin, getJourneyByIdAndUserId, getLastJourneyByUserId, getLastJourneyByUserIdForUser, getJourneysByUserIdForUser, getJourneysByUserIdForAdmin, getJourneyById, getCompletedAndCanceledJourney } = require("../dbConnnection/repositry.js/journey-repo")
 const { getProductsById, getRandomProductWithMaxPrice } = require("../dbConnnection/repositry.js/product-repo")
-const { getUserById, editUser, getUserByAdminCode, getUserByMainAccount, getUserCredit } = require("../dbConnnection/repositry.js/user-repo")
+const { getUserById, editUser, getUserByAdminCode, getUserByMainAccount, getUserCredit, getAllDoneAndCanceledJourneys } = require("../dbConnnection/repositry.js/user-repo")
 const { getWalletByUserId, editWallet } = require("../dbConnnection/repositry.js/wallet-repos")
 const { checkBreakPoints, checkCurrentStage, checkLastBreakPoint } = require("../helpers/journeyChecks")
 const { UserNotFound, 
@@ -361,6 +361,30 @@ const resetJourney = async (req, res, next) => {
     })
 }
 
+const resetAllCompletedJourneys = async (req, res, next) => {
+    const userJourneys = await getAllDoneAndCanceledJourneys()
+    let ids = userJourneys.map(userJourney => userJourney.currentJourney)
+    let journeys = await getCompletedAndCanceledJourney({ids})
+    for (const journey in journeys) {
+        const newJourney = await createJourney({
+            userId: journeys[journey]?.userId, 
+            adminId: req.userData.user._id, 
+            breakPoints: journeys[journey]?.breakPoints, 
+            maxStagesNumber: journeys[journey]?.maxStagesNumber, 
+            productValueMin: journeys[journey]?.productValueMin, 
+            productValue: journeys[journey]?.productValue, 
+            pointsCommission: journeys[journey]?.pointsCommission
+        })
+
+        let currentJourney = newJourney._id
+        const newUser = await editUser({userId: journeys[journey].userId.toString(), updateData: {currentJourney}})
+    }
+    return res.json({
+        success: true,
+        message: "All Journeys reseted successfully",
+    })
+}
+
 const userJourneys = async (req, res, next) => {
     const userId = req.userData.user._id
     if (!userId){
@@ -455,5 +479,6 @@ module.exports = {
     userJourneysByAdmin,
     getJourneyByIdForAdmin,
     resetJourney,
-    getSingleJourneyHistory
+    getSingleJourneyHistory,
+    resetAllCompletedJourneys
 }
