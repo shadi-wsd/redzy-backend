@@ -33,6 +33,7 @@ async function getProduct({pageNumber, pageSize}){
     const skipCount = (pageNumber - 1 ) * pageSize
     
     return productModel.find({ status: { $ne: "deleted" }})
+    .sort({ price: 1 })
     // .skip(skipCount)
     // .limit(pageSize)
 }
