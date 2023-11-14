@@ -1,4 +1,4 @@
-const { editParameter, createParameter, getParameterById, getParameter, getParameterByName } = require("../dbConnnection/repositry.js/parameter-repo");
+const { editParameter, createParameter, getParameterById, getParameter, getParameterByName, removeParameterById } = require("../dbConnnection/repositry.js/parameter-repo");
 const { FieldsMandotry } = require("../instance");
 const ErrorHandler = require("../utils/errorHandler");
 
@@ -78,4 +78,18 @@ const getParametersByAdmin = async ( req, res, next) => {
     })
 }
 
-module.exports = { addParameter, updateParameter, getParametersById, getParametersByName, getParameters, getParametersByAdmin }
+const  removeParameter = async (req, res, next) => {
+    const { parameterId }  = req.query
+    if (!parameterId){
+        return next(new ErrorHandler(FieldsMandotry, 400)); 
+    }
+    const removeParameter = await removeParameterById({parameterId})
+
+    return res.status(200).json({
+        success: true,
+        meesage: " parameter removed successfully",
+        removeParameter
+    })
+}
+
+module.exports = { addParameter, updateParameter, getParametersById, getParametersByName, getParameters, getParametersByAdmin, removeParameter }

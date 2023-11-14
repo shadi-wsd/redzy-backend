@@ -14,7 +14,7 @@ const Journey = require("../dbConnnection/model/Journey");
 const { placeJourney, editJourneys, placeOrder, submitOrder, getLastJourneyInof, cancelJourney, userJourneys, getJourneyHistory, userJourneysByAdmin, getJourneyByIdForAdmin, resetJourney, getSingleJourneyHistory, resetAllCompletedJourneys } = require("../controllers/journeyController");
 const { getMyTransactions, getTransaction } = require("../controllers/transactionsController");
 const { createCustomJourneys, editCustomJourneys, getCustomJourney, getCustomJourneys } = require("../controllers/customJourneyController");
-const { addParameter, updateParameter, getParametersById, getParameters, getParametersByName, getParametersByAdmin } = require("../controllers/parametersController");
+const { addParameter, updateParameter, getParametersById, getParameters, getParametersByName, getParametersByAdmin, removeParameter } = require("../controllers/parametersController");
 const { saveLogs } = require("../middleware/logs");
 const router = express.Router();
 router.use(bodyParser.json())
@@ -131,6 +131,7 @@ router.get("/get-parameters-by-admin", checkAdminAuth, catchAsyncError(getParame
 router.get("/get-user-parameter-by-id", checkAuth, catchAsyncError(getParametersById))
 router.get("/get-parameters", checkAuth, catchAsyncError(getParameters))
 router.get("/get-parameter-by-name", checkAuth, catchAsyncError(getParametersByName))
+router.get("/remove-parameter", checkAuth, catchAsyncError(removeParameter))
 // Parameters: begin
 
 

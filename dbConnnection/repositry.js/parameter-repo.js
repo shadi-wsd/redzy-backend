@@ -34,7 +34,8 @@ function getParameterByName({parameterName}){
 function getParameter(){
     return parameterModel.find()
 }
-function getParameterById({parameterId}){
+
+function removeParameterById({parameterId}){
     return parameterModel.findByIdAndRemove(parameterId);
 }
 
@@ -44,5 +45,6 @@ module.exports = {
     editParameter,
     getParameterById,
     getParameterByName,
-    getParameter
+    getParameter,
+    removeParameterById
 }
