@@ -34,6 +34,9 @@ function getParameterByName({parameterName}){
 function getParameter(){
     return parameterModel.find()
 }
+function getParameterById({parameterId}){
+    return parameterModel.findByIdAndRemove(parameterId);
+}
 
 
 module.exports = {
