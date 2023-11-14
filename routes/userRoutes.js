@@ -131,7 +131,7 @@ router.get("/get-parameters-by-admin", checkAdminAuth, catchAsyncError(getParame
 router.get("/get-user-parameter-by-id", checkAuth, catchAsyncError(getParametersById))
 router.get("/get-parameters", checkAuth, catchAsyncError(getParameters))
 router.get("/get-parameter-by-name", checkAuth, catchAsyncError(getParametersByName))
-router.delete("/remove-parameter", checkAuth, catchAsyncError(removeParameter))
+router.delete("/remove-parameter", checkAdminAuth, catchAsyncError(removeParameter))
 // Parameters: begin
 
 
