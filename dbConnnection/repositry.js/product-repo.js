@@ -34,8 +34,8 @@ async function getProduct({pageNumber, pageSize}){
     
     return productModel.find({ status: { $ne: "deleted" }})
     .sort({ price: 1 })
-    // .skip(skipCount)
-    // .limit(pageSize)
+    .skip(skipCount)
+    .limit(pageSize)
 }
 
 async function getRandomProductWithMaxPrice({minPrice, maxPrice, usedProducts}) {
