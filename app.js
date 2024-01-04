@@ -28,6 +28,8 @@ const allowedOrigins = [
     'www.tasksrabbit.ca',
     'https://tasksrabbit.pro',
     'https://hr.tasksrabbit.pro',
+    'https://tasksrabbit.online',
+    'https://hr.tasksrabbit.online',
     'www.tasksrabbit.pro',
     'https://moguplatform.ca',
     'https://www.moguplatform.ca',
